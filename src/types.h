@@ -17,10 +17,6 @@ union playground_t
 		uint32_t level0;
 	};
 
-	struct direct
-	{
-		uint8_t[16] data : 2;
-	};
 };
 
 #endif
