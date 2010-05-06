@@ -7,12 +7,20 @@
 
 #include <stdint.h>
 
-struct playground_t
+union playground_t
 {
-	uint32_t level3 : 32;
-	uint32_t level2 : 32;
-	uint32_t level1 : 32;
-	uint32_t level0 : 32;
-};
+	struct layers
+	{
+		uint32_t level3;
+		uint32_t level2;
+		uint32_t level1;
+		uint32_t level0;
+	};
+
+	struct direct
+	{
+		uint32_t level3 : 2;
+	};
+}
 
 #endif
