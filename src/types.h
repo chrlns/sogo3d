@@ -9,14 +9,7 @@
 
 union playground_t
 {
-	struct layers
-	{
-		uint32_t level3;
-		uint32_t level2;
-		uint32_t level1;
-		uint32_t level0;
-	};
-
+	uint32_t  layer[4];
 };
 
 #endif
