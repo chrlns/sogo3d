@@ -1,5 +1,5 @@
 CFLAGS=-Wall --pedantic -I./include
-LDFLAGS=-lc
+LDFLAGS=-lc -lglut -lGLU -lGL -lXmu -lXext -lX11 -lm
 RELEASE=-O2
 DEBUG=-g
 SOURCE=$(wildcard *.cpp)
