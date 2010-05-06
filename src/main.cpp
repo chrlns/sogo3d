@@ -1,4 +1,5 @@
 #include "types.h"
+#include "playground.h"
 #include <stdint.h>
 #include <iostream>
 
@@ -14,5 +15,17 @@ void printPlaygroundPositions()
 int main(int argc, char* argv[])
 {
 	printPlaygroundPositions();
+	Playground* pg = new Playground();
+	pg->set(2,3,1, BLACK);
+
+	if(pg->get(2,3,1) == BLACK)
+	{
+		std::cout << "Geht:" << pg->playground.layer[3] << std::endl;
+	}
+	else
+	{
+		std::cout << "Geht NICHT" << std::endl;
+	}
+
 	return 0;
 }
