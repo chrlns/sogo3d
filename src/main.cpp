@@ -1,6 +1,9 @@
 #include "types.h"
 #include "playground.h"
 #include <stdint.h>
+ 
+#include "gui.h"
+ 
 #include <iostream>
 
 void printPlaygroundPositions()
@@ -11,9 +14,13 @@ void printPlaygroundPositions()
 	std::cout << "| 5  6  7  8|" << std::endl;
 	std::cout << "| 1  2  3  4|" << std::endl;
 }
+ 
 
 int main(int argc, char* argv[])
 {
+ 
+	init_gamewindow(&argc, argv);
+ 
 	printPlaygroundPositions();
 	Playground* pg = new Playground();
 	pg->set(2,3,1, BLACK);
@@ -27,5 +34,6 @@ int main(int argc, char* argv[])
 		std::cout << "Geht NICHT" << std::endl;
 	}
 
+ 
 	return 0;
 }
