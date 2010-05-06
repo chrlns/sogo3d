@@ -17,10 +17,10 @@ union playground_t
 		uint32_t level0;
 	};
 
-	struct direct
-	{
-		uint32_t level3 : 2;
-	};
-}
+	//struct direct
+	//{
+		//uint8_t level3 : 2;
+	//};
+};
 
 #endif
