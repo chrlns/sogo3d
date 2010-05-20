@@ -26,3 +26,20 @@ void Playground::set (uint8_t x, uint8_t y, uint8_t z, uint8_t value)
 {
 	this->playground.layer[y] |= (value << ((x + z * 4) * 2));
 }
+
+int Playground::rating(int color)
+{
+	return 1;
+}
+
+Playground* Playground::clone()
+{
+	Playground* clone = new Playground();
+	clone->playground = this->playground;
+	return clone;
+}
+
+bool Playground::move(int x, int z, int color)
+{
+	return false;
+}
