@@ -6,6 +6,9 @@
 
 float cameraHeigth = 3;
 float camDegree = 0;
+GLfloat LightDiffuse[]= { 1.0f, 1.0f, 1.0f, 1.0f };	
+GLfloat LightPosition[]= { 0.0f, 0.0f, 2.0f, 1.0f };
+
 
 /* --Copy&Paste. */
 void reshape(int w, int h) {
@@ -15,11 +18,12 @@ void reshape(int w, int h) {
   //float wf = w;
   //float hf = h;
   //gluPerspective(60.0,wf/hf,0.01,1000);
-   glFrustum(-1,1,-1,1,1,10);
+   glOrtho(-1,1,-1,1,0.1,100);
 //glRotatef(1, 0, 0, 1);
  glMatrixMode( GL_MODELVIEW );
   glLoadIdentity();
   glEnable( GL_DEPTH_TEST );
+  glEnable(GL_LIGHT1);
 
 }
 
@@ -49,10 +53,13 @@ void keyboardFunc(unsigned char key, int mouseX, int mouseY)
 }
 
 void display(void) {
-glColor3f(0.0f,0.0f,0.0f);
+ glLoadIdentity();
+glScalef(0.3, 0.3, 0.3);
+   gluLookAt(sin(camDegree) *  4, cos(camDegree) * 4, cameraHeigth, 0, 0, 0, 0, 0, 1);
+     glColor3f(0.0f,0.0f,0.0f);
 	  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
-	  glLoadIdentity();
-	  gluLookAt(sin(camDegree) *  4, cos(camDegree) * 4, cameraHeigth, 0, 0, 0, 0, 0, 1);
+	 
+	 // gluLookAt(sin(camDegree) *  4, cos(camDegree) * 4, cameraHeigth, 0, 0, 0, 0, 0, 1);
 	glBegin(GL_QUADS);
 		glColor3f(.5f,0.25f,0.0f);	
 		//obere fläche	 
@@ -97,23 +104,23 @@ glColor3f(0.0f,0.0f,0.0f);
 				float y = -1.5 + j;
 				//printf("Position: %f %f\n", x, y);
 				glVertex3f(x + 0.1, y + 0.1, 1.2); 
-				glVertex3f(x + 0.1, y + 0.1, 2.5); 
-				glVertex3f(x - 0.1, y + 0.1, 2.5); 
+				glVertex3f(x + 0.1, y + 0.1, 3.5); 
+				glVertex3f(x - 0.1, y + 0.1, 3.5); 
 				glVertex3f(x - 0.1, y + 0.1, 1.2);
 				 
 				glVertex3f(x + 0.1, y - 0.1, 1.2); 
-				glVertex3f(x + 0.1, y - 0.1, 2.5); 
-				glVertex3f(x - 0.1, y - 0.1, 2.5); 
+				glVertex3f(x + 0.1, y - 0.1, 3.5); 
+				glVertex3f(x - 0.1, y - 0.1, 3.5); 
 				glVertex3f(x - 0.1, y - 0.1, 1.2);
 				 
 				glVertex3f(x + 0.1, y + 0.1, 1.2); 
-				glVertex3f(x + 0.1, y + 0.1, 2.5); 
-				glVertex3f(x + 0.1, y - 0.1, 2.5); 
+				glVertex3f(x + 0.1, y + 0.1, 3.5); 
+				glVertex3f(x + 0.1, y - 0.1, 3.5); 
 				glVertex3f(x + 0.1, y - 0.1, 1.2);
 				 
 				glVertex3f(x - 0.1, y + 0.1, 1.2); 
-				glVertex3f(x - 0.1, y + 0.1, 2.5); 
-				glVertex3f(x - 0.1, y - 0.1, 2.5); 
+				glVertex3f(x - 0.1, y + 0.1, 3.5); 
+				glVertex3f(x - 0.1, y - 0.1, 3.5); 
 				glVertex3f(x - 0.1, y - 0.1, 1.2);
 				 
 			}		
