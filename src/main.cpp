@@ -1,39 +1,33 @@
+#include "gui.h"
 #include "types.h"
 #include "playground.h"
 #include <stdint.h>
- 
-#include "gui.h"
- 
 #include <iostream>
+#include <GL/glut.h>
 
-void printPlaygroundPositions()
+/*
+ * Führt einen Spielzug aus. Diese Methode wird entweder aufgerufen,
+ * wenn der menschliche Spieler eine Kugel legt oder die KI für den Computer-
+ * spieler einen neuen Spielzug berechnet hat.
+ * color: Farbe des Spielers
+ * x, y, z: Position der neuen Kugel
+ * playground: aktueller Spielstatus
+ */
+int move(int color, int x, int y, int z, Playground* playground)
 {
-	std::cout << "Von oben gesehen:" << std::endl;
-	std::cout << "|13 14 15 16|" << std::endl;
-	std::cout << "| 9 10 11 12|" << std::endl;
-	std::cout << "| 5  6  7  8|" << std::endl;
-	std::cout << "| 1  2  3  4|" << std::endl;
+	return 0;
 }
- 
 
 int main(int argc, char* argv[])
 {
- 
+ 	/* Startet die grafische Oberfläche */
 	init_gamewindow(&argc, argv);
  
-	printPlaygroundPositions();
+	/* Leeren Playground erzeugen */
 	Playground* pg = new Playground();
-	pg->set(2,3,1, BLACK);
 
-	if(pg->get(2,3,1) == BLACK)
-	{
-		std::cout << "Geht:" << pg->playground.layer[3] << std::endl;
-	}
-	else
-	{
-		std::cout << "Geht NICHT" << std::endl;
-	}
+	glutMainLoop();
 
- 
+ 	delete pg;
 	return 0;
 }

@@ -139,9 +139,6 @@ void init_gamewindow(int* argc, char **argv)
     glutDisplayFunc(display);
     glutReshapeFunc(reshape);
    	glutKeyboardFunc(keyboardFunc);
-
-    glutMainLoop();
-
 }
 
 
