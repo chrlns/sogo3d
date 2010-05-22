@@ -73,28 +73,29 @@ glScalef(0.3, 0.3, 0.3);
 	  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	 
 	 // gluLookAt(sin(camDegree) *  4, cos(camDegree) * 4, cameraHeigth, 0, 0, 0, 0, 0, 1);
-	
+	glEnable(GL_TEXTURE_2D);
 	glBindTexture(GL_TEXTURE_2D, texture[0]);
 	glBegin(GL_QUADS);
 		//glColor3f(.5f,0.25f,0.0f);	
 		glColor3f(1, 1, 1);
 		//obere fläche	 
 		glTexCoord2f(0.0f, 0.0f);
-		glVertex3f( -2, 2, 1);	
+		glVertex3f( -2, 2, 1.2);	
 		glTexCoord2f(1.0f, 0.0f);	 
-		glVertex3f( 2, 2, 1);	
+		glVertex3f( 2, 2, 1.2);	
 		glTexCoord2f(1.0f, 1.0f);	 
-		glVertex3f( 2, -2, 1);	
+		glVertex3f( 2, -2, 1.2);	
 		glTexCoord2f(0.0f, 1.0f);	 
-		glVertex3f( -2, -2, 1);	
+		glVertex3f( -2, -2, 1.2);	
 	glEnd();
-	//glDisable(GL_TEXTURE_2D);
+	glDisable(GL_TEXTURE_2D);
+glColor3f(.5f,0.25f,0.0f);
 		glBegin(GL_QUADS);
 		//untere fläche (eigentlich nicht nötig)	 
-	    glVertex3f( -2, 2, 1.2);		 
-		glVertex3f( 2, 2, 1.2);		 
-		glVertex3f( 2, -2, 1.2);		 
-		glVertex3f( -2, -2, 1.2);	
+	    glVertex3f( -2, 2, 1);		 
+		glVertex3f( 2, 2, 1);		 
+		glVertex3f( 2, -2, 1);		 
+		glVertex3f( -2, -2, 1);	
 		
 		glColor3f(.4f,0.2f,0.0f);	
 		//seitenränder	 
@@ -178,9 +179,27 @@ void loadTexture()
 	glEnable(GL_TEXTURE_2D);
 	glGenTextures(1, texture);
 	glBindTexture(GL_TEXTURE_2D, texture[0]);
+
+
+	/*
+    glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+*/
+
+	// Diese beiden Parameter müssen auf jedenfall gesetzt werden, 
+	// sonst wird die Textur nicht angezeigt !
+    glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+
+/*
+    glTexEnvf (GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
 	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+*/
+
+	
 	glTexImage2D(GL_TEXTURE_2D, 0, 3, bmp.width, bmp.height, 
 		0, GL_RGB, GL_UNSIGNED_BYTE, bmp.bytes);
+
 }
 
 void init_gamewindow(int* argc, char **argv) 
@@ -193,7 +212,6 @@ void init_gamewindow(int* argc, char **argv)
     glutDisplayFunc(display);
     glutReshapeFunc(reshape);
    	glutKeyboardFunc(keyboardFunc);
-   	
    	// Texturen dürfen erst hier geladen werden, da vorher u.U. noch
    	// kein OpenGL Kontext existiert
    	loadTexture();
