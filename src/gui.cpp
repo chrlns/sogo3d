@@ -6,6 +6,9 @@
 #include <stdlib.h>
 #include <math.h>
 #include "BMPLoader.h"
+#include "playground.h"
+
+extern Playground* currentPlayground;
 
 int windowWidth;
 int windowHeigth;
@@ -19,7 +22,6 @@ GLfloat LightPosition[]= { 0.0f, 0.0f, 2.0f, 1.0f };
 
 GLuint* texture = (GLuint*)malloc(sizeof(GLuint) * 1);
 GLUquadricObj *quadric;
-
 
 // das aktuelle spielfeld wird hier vorläufig erstmal ziemlich ineffizient zwischengespeichert
 int markedStab = -1;
@@ -72,6 +74,31 @@ void createBall(int x, int y, int z, int color) {
 
 	gluSphere(quadric,ballSize,32,32);
 	glPopMatrix();
+}
+
+void drawPlayground(Playground* pg)
+{
+	for(int x = 0; x < 4; x++)
+	{
+		for(int y = 0; y < 4; y++)
+		{
+			for(int z = 0; z < 4; z++)
+			{
+				switch(pg->get(x, y, z))
+				{
+					case BLACK:
+						createBall(x, y, z, 0);
+						break;
+					case WHITE:
+						createBall(x, y, z, 1);
+						break;
+					case EMPTY:
+						z = 4;
+						break;
+				}
+			}
+		}
+	}
 }
 
 void keyboardFunc(unsigned char key, int mouseX, int mouseY)
@@ -215,7 +242,7 @@ glColor3f(.5f,0.25f,0.0f);
 	displayTargets();	
 
 	glLoadName(0);
-
+/*
 	for (int i=0;i<4;i++) {
 		for (int j=0;j<4;j++) {	
 			int stabId = i*4+j+1;
@@ -224,6 +251,10 @@ glColor3f(.5f,0.25f,0.0f);
 			}
 		}	
 	}
+	* */
+	
+	// Draw the current Playground
+	drawPlayground(currentPlayground);
 
 	glFlush();
 	glutSwapBuffers();
@@ -352,9 +383,11 @@ void mouse(int button, int state, int x, int y)
 	else 
 		currentColor = 0;
 	glutPostRedisplay();
+	
+	x = markedStab % 4;
+	y = markedStab / 4;
+	currentPlayground->move(x, y, BLACK);
 }
-
-
 
 void init_gamewindow(int* argc, char **argv) 
 {

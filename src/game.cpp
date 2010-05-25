@@ -1,9 +1,6 @@
 #include "playground.h"
 #include <queue>
 
-#define switchColor(color) \
-	color == BLACK ? WHITE : BLACK
-
 int max(Playground* root, int horizon, int color);
 
 int min(Playground* root, int horizon, int color)

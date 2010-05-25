@@ -5,6 +5,8 @@
 #include <iostream>
 #include <GL/glut.h>
 
+Playground* currentPlayground = NULL;
+
 /*
  * Führt einen Spielzug aus. Diese Methode wird entweder aufgerufen,
  * wenn der menschliche Spieler eine Kugel legt oder die KI für den Computer-
@@ -24,10 +26,10 @@ int main(int argc, char* argv[])
 	init_gamewindow(&argc, argv);
  
 	/* Leeren Playground erzeugen */
-	Playground* pg = new Playground();
+	currentPlayground = new Playground();
 
 	glutMainLoop();
 
- 	delete pg;
+ 	delete currentPlayground;
 	return 0;
 }

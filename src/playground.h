@@ -10,6 +10,7 @@ class Playground
 {
 	public: // Fürs Debuggen
 		playground_t playground;
+		int turnColor; // WHITE begins
 
 	public:
 		Playground();
@@ -25,7 +26,7 @@ class Playground
 
 		// Setze Kugel an die angegebene Position und gibt true zurück,
 		// wenn der Zug möglich war, anderfalls false
-		bool move(int x, int z, int color);
+		bool move(int x, int y, int color);
 
 		int rating(int color);
 };
