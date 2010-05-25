@@ -5,6 +5,9 @@
 #define BLACK 1
 #define WHITE 2
 
+#define switchColor(color) \
+	color == BLACK ? WHITE : BLACK
+
 #include <stdint.h>
 
 union playground_t
