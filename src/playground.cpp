@@ -1,11 +1,18 @@
 #include "playground.h"
+#include "types.h"
 
 Playground::Playground()
 {
-	this->playground.layer[0] = 0;
+	/*this->playground.layer[0] = 0;
 	this->playground.layer[1] = 0;
 	this->playground.layer[2] = 0;
-	this->playground.layer[3] = 0;
+	this->playground.layer[3] = 0;*/
+	
+	for(int x = 0; x < 4; x++) {
+		for(int y = 0; y < 4; y++) {
+			this->cols[x][y] = 0;
+		}
+	}
 	
 	this->turnColor = WHITE;
 }
@@ -21,12 +28,15 @@ int Playground::isGameOver()
 // ist diese Methode möglicherweise nicht sehr effizient.
 int Playground::get (uint8_t x, uint8_t y, uint8_t z)
 {
-	return (this->playground.layer[z] & (3 << (x + y * 4) * 2)) >> 2 * (x + y * 4);	
+	//return (this->playground.layer[z] & (3 << (x + y * 4) * 2)) >> 2 * (x + y * 4);	
+	uint8_t v = this->cols[x][y];
+	return (v & (3 << z * 2)) >> (z * 2);
 }
 
 void Playground::set (uint8_t x, uint8_t y, uint8_t z, uint8_t value)
 {
-	this->playground.layer[z] |= (value << ((x + y * 4) * 2));
+	//this->playground.layer[z] |= (value << ((x + y * 4) * 2));
+	this->cols[x][y] |= value << (z * 2);
 }
 
 int Playground::rating(int color)
@@ -36,9 +46,9 @@ int Playground::rating(int color)
 
 Playground* Playground::clone()
 {
-	Playground* clone = new Playground();
-	clone->playground = this->playground;
-	return clone;
+	//Playground* clone = new Playground();
+	//clone->playground = this->playground;
+	//return clone;
 }
 
 bool Playground::move(int x, int y, int color)
@@ -51,6 +61,8 @@ bool Playground::move(int x, int y, int color)
 				return true;
 			}
 		}
+	} else {
+		dbgmsg("It's not your turn, color " << color); 
 	}
 	return false;
 }
