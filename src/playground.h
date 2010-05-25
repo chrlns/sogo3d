@@ -8,8 +8,9 @@
 
 class Playground
 {
-	public: // Fürs Debuggen
-		playground_t playground;
+	protected:
+		uint8_t cols[4][4]; // 4x4 Säulen
+		//playground_t playground;
 		int turnColor; // WHITE begins
 
 	public:

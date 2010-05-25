@@ -30,7 +30,8 @@ int gameField[128];	//stupid but too late and too tired to fix now
 int currentColor = 0;
 
 
-void reshape(int w, int h) {
+void reshape(int w, int h)
+{
   windowWidth = w;
   windowHeigth = h;
   glViewport(0, 0, w, h);       /* Establish viewing area to cover entire window. */
@@ -59,8 +60,9 @@ void reshape(int w, int h) {
 */
 }
 
-void createBall(int x, int y, int z, int color) {
-	printf("CreateBall %i %i %i %i\n", x, y, z, color);
+void createBall(int x, int y, int z, int color)
+{
+	//printf("CreateBall %i %i %i %i\n", x, y, z, color);
 	float ballSize = 0.3;
 	float xp = -1.5 + x;
 	float yp = -1.5 + y;
@@ -78,14 +80,10 @@ void createBall(int x, int y, int z, int color) {
 
 void drawPlayground(Playground* pg)
 {
-	for(int x = 0; x < 4; x++)
-	{
-		for(int y = 0; y < 4; y++)
-		{
-			for(int z = 0; z < 4; z++)
-			{
-				switch(pg->get(x, y, z))
-				{
+	for(int x = 0; x < 4; x++) {
+		for(int y = 0; y < 4; y++) {
+			for(int z = 0; z < 4; z++) {
+				switch(pg->get(x, y, z)) {
 					case BLACK:
 						createBall(x, y, z, 0);
 						break;
@@ -103,7 +101,7 @@ void drawPlayground(Playground* pg)
 
 void keyboardFunc(unsigned char key, int mouseX, int mouseY)
 {
-	printf("Key: %c\n", key);
+	//printf("Key: %c\n", key);
   switch(key)
     {
         /* If the user hits escape or Q, then exit */
@@ -145,7 +143,7 @@ void displayTargets() {
 		//stäbe, 16 an der zahl!
 		for (int i=0;i<4;i++) {
 			for (int j=0;j<4;j++) {
-			int stabId = i*4+j+1;
+			int stabId = i*4+j;
 			glLoadName(stabId);	// glLoadName darf nicht innerhalb eines glBegin GlEnd Blocks aufgerufen werden.
 			glBegin(GL_QUADS);
 				if (stabId == markedStab)
@@ -366,8 +364,6 @@ void mouseMotion(int x, int y)		// grösstenteils übernommen von http://nehe.ga
 	}
 	
 	glutPostRedisplay();
-
-	 
 }
 
 void mouse(int button, int state, int x, int y)
@@ -382,17 +378,18 @@ void mouse(int button, int state, int x, int y)
 		currentColor = 1; 
 	else 
 		currentColor = 0;
-	glutPostRedisplay();
 	
-	x = markedStab % 4;
-	y = markedStab / 4;
-	currentPlayground->move(x, y, BLACK);
+	y = markedStab % 4;
+	x = markedStab / 4;
+	dbgmsg("Klick " << markedStab << " " << x << " " << y);
+	currentPlayground->move(x, y, WHITE);
+	glutPostRedisplay();
 }
 
 void init_gamewindow(int* argc, char **argv) 
 {
 	glutInit(argc, argv);
-    glutInitWindowSize(500, 500);   
+    glutInitWindowSize(640, 480);   
     glutInitDisplayMode(GLUT_DOUBLE); 
     glutCreateWindow("S O G O professional");
 
@@ -401,6 +398,7 @@ void init_gamewindow(int* argc, char **argv)
    	glutKeyboardFunc(keyboardFunc);
    	glutMouseFunc(mouse);  
    	glutPassiveMotionFunc(mouseMotion);
+   	glutIdleFunc(display);
    	// Texturen dürfen erst hier geladen werden, da vorher u.U. noch
    	// kein OpenGL Kontext existiert
    	loadTexture();
@@ -410,5 +408,4 @@ void init_gamewindow(int* argc, char **argv)
 	for (int i=0;i<16;i++) {
 		count[i] = 0;
 	}
-
 }
