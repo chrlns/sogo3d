@@ -51,18 +51,14 @@ Playground* Playground::clone()
 	//return clone;
 }
 
-bool Playground::move(int x, int y, int color)
+bool Playground::move(int x, int y)
 {
-	if(color == this->turnColor) {
-		for(int z = 0; z < 4; z++) {
-			if(get(x, y, z) == EMPTY) {
-				set(x, y, z, color);
-				this->turnColor = switchColor(this->turnColor);
-				return true;
-			}
+	for(int z = 0; z < 4; z++) {
+		if(get(x, y, z) == EMPTY) {
+			set(x, y, z, this->turnColor);
+			this->turnColor = switchColor(this->turnColor);
+			return true;
 		}
-	} else {
-		dbgmsg("It's not your turn, color " << color); 
 	}
 	return false;
 }

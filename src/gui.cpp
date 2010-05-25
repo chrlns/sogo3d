@@ -382,7 +382,7 @@ void mouse(int button, int state, int x, int y)
 	y = markedStab % 4;
 	x = markedStab / 4;
 	dbgmsg("Klick " << markedStab << " " << x << " " << y);
-	currentPlayground->move(x, y, WHITE);
+	currentPlayground->move(x, y);
 	glutPostRedisplay();
 }
 
