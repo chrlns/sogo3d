@@ -1,9 +1,9 @@
 #include "playground.h"
 #include <queue>
 
-int max(Playground* root, int horizon, int color);
+int max(Playground* root, int horizon, int color, int* x, int* y);
 
-int min(Playground* root, int horizon, int color)
+int min(Playground* root, int horizon, int color, int* ox, int* oy)
 {
 	// Maximale Tiefe noch nicht erreicht?
 	if(horizon > 0 || !root->isGameOver())
@@ -18,9 +18,15 @@ int min(Playground* root, int horizon, int color)
 				Playground* pg = root->clone();
 				if(pg->move(x, y))
 				{
+					int optX, optY;
 					// Das neue Spielfeld ist gültig und sollte weiter untersucht
-					int maxv = max(pg, horizon - 1, switchColor(color));
+					int maxv = max(pg, horizon - 1, switchColor(color), &optX, &optY);
 					minmax = maxv < minmax ? maxv : minmax;
+					if(maxv < minmax) {
+						minmax = maxv;
+						*ox = optX;
+						*oy = optY;
+					}
 				}
 				delete pg;
 			}
@@ -33,7 +39,7 @@ int min(Playground* root, int horizon, int color)
 	}
 }
 
-int max(Playground* root, int horizon, int color)
+int max(Playground* root, int horizon, int color, int* ox, int* oy)
 {
 	// Maximale Tiefe noch nicht erreicht?
 	if(horizon > 0 || !root->isGameOver())
@@ -48,9 +54,14 @@ int max(Playground* root, int horizon, int color)
 				Playground* pg = root->clone();
 				if(pg->move(x, y))
 				{
+					int optX, optY;
 					// Das neue Spielfeld ist gültig und sollte weiter untersucht
-					int minv = min(pg, horizon - 1, switchColor(color));
-					minmax = minv > minmax ? minv : minmax;
+					int minv = min(pg, horizon - 1, switchColor(color), &optX, &optY);
+					if(minv > minmax) {
+						minmax = minv;
+						*ox = optX;
+						*oy = optY;
+					}
 				}
 				delete pg;
 			}
@@ -71,5 +82,8 @@ int max(Playground* root, int horizon, int color)
  */
 int minimax(Playground* root, int color, int horizon)
 {
-	int minmax = max(root, horizon, color);
+	int optX = -1;
+	int optY = -1;
+	int minmax = max(root, horizon, color, &optX, &optY);
+	dbgmsg("Idealer Zug: " << optX << " " << optY);
 }
