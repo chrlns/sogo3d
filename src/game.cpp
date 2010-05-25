@@ -16,7 +16,7 @@ int min(Playground* root, int horizon, int color)
 			for(int y = 0; y < 4; y++)
 			{
 				Playground* pg = root->clone();
-				if(pg->move(x, y, color))
+				if(pg->move(x, y))
 				{
 					// Das neue Spielfeld ist gültig und sollte weiter untersucht
 					int maxv = max(pg, horizon - 1, switchColor(color));
@@ -46,7 +46,7 @@ int max(Playground* root, int horizon, int color)
 			for(int y = 0; y < 4; y++)
 			{
 				Playground* pg = root->clone();
-				if(pg->move(x, y, color))
+				if(pg->move(x, y))
 				{
 					// Das neue Spielfeld ist gültig und sollte weiter untersucht
 					int minv = min(pg, horizon - 1, switchColor(color));

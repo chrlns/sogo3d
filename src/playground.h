@@ -27,7 +27,7 @@ class Playground
 
 		// Setze Kugel an die angegebene Position und gibt true zurück,
 		// wenn der Zug möglich war, anderfalls false
-		bool move(int x, int y, int color);
+		bool move(int x, int y);
 
 		int rating(int color);
 };
