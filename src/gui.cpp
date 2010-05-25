@@ -7,7 +7,7 @@
 #include <math.h>
 #include "BMPLoader.h"
 #include "playground.h"
-#include "game.h"
+//#include "game.h"
 
 extern Playground* currentPlayground;
 
