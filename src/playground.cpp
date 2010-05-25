@@ -2,12 +2,7 @@
 #include "types.h"
 
 Playground::Playground()
-{
-	/*this->playground.layer[0] = 0;
-	this->playground.layer[1] = 0;
-	this->playground.layer[2] = 0;
-	this->playground.layer[3] = 0;*/
-	
+{	
 	for(int x = 0; x < 4; x++) {
 		for(int y = 0; y < 4; y++) {
 			this->cols[x][y] = 0;
@@ -28,17 +23,18 @@ int Playground::isGameOver()
 // ist diese Methode möglicherweise nicht sehr effizient.
 int Playground::get (uint8_t x, uint8_t y, uint8_t z)
 {
-	//return (this->playground.layer[z] & (3 << (x + y * 4) * 2)) >> 2 * (x + y * 4);	
 	uint8_t v = this->cols[x][y];
 	return (v & (3 << z * 2)) >> (z * 2);
 }
 
+// Diese Methode kann nur Bits setzen, jedoch nicht löschen
+// (was für das Spiel im Grunde auch nicht benötigt wird)
 void Playground::set (uint8_t x, uint8_t y, uint8_t z, uint8_t value)
 {
-	//this->playground.layer[z] |= (value << ((x + y * 4) * 2));
 	this->cols[x][y] |= value << (z * 2);
 }
 
+// Bewertung des aktuellen Spielfeldes
 int Playground::rating(int color)
 {
 	return 1;
@@ -46,9 +42,14 @@ int Playground::rating(int color)
 
 Playground* Playground::clone()
 {
-	//Playground* clone = new Playground();
-	//clone->playground = this->playground;
-	//return clone;
+	Playground* clone = new Playground();
+	for(int x = 0; x < 4; x++) {
+		for(int y = 0; y < 4; y++) {
+			clone->cols[x][y] = this->cols[x][y];
+		}
+	}
+	clone->turnColor = this->turnColor;
+	return clone;
 }
 
 bool Playground::move(int x, int y)
