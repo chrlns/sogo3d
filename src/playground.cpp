@@ -1,5 +1,7 @@
 #include "playground.h"
 #include "types.h"
+#include <cstdlib>
+
 
 Playground::Playground()
 {	
@@ -138,7 +140,10 @@ void Playground::set (uint8_t x, uint8_t y, uint8_t z, uint8_t value)
 	this->cols[x][y] |= value << (z * 2);
 }
 
-// Bewertung des aktuellen Spielfeldes
+// Bewertung des aktuellen Spielfeldes.
+// Je besser das Spielfeld für die gegebene Farbe ist, desto höher ist
+// der Wert.
+// returns [0 - MAX_RATING]
 int Playground::rating(int color)
 {
 	int ratingVal=0;
@@ -257,7 +262,7 @@ int Playground::rating(int color)
 	       ratingVal++;
 	    }    
 	} 
-	return ratingVal;
+	return ratingVal +abs(rand()/100);
 }
 
 Playground* Playground::clone()
