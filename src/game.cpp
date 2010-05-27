@@ -6,7 +6,7 @@ int max(Playground* root, int horizon, int color, int* x, int* y);
 int min(Playground* root, int horizon, int color, int* ox, int* oy)
 {
 	// Maximale Tiefe noch nicht erreicht?
-	if(horizon > 0 && !root->isGameOver())
+	if(horizon > 0 && (root->isGameOver() == 0))
 	{
 		int minmax = MAX_RATING;
 
@@ -43,7 +43,7 @@ int min(Playground* root, int horizon, int color, int* ox, int* oy)
 int max(Playground* root, int horizon, int color, int* ox, int* oy)
 {
 	// Maximale Tiefe noch nicht erreicht?
-	if(horizon > 0 && !root->isGameOver())
+	if(horizon > 0 && (root->isGameOver() == 0))
 	{
 		int minmax = -MAX_RATING;
 
