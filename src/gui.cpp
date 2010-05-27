@@ -50,7 +50,7 @@ void reshape(int w, int h)
  glMatrixMode( GL_MODELVIEW );
   glLoadIdentity();
   glEnable( GL_DEPTH_TEST );
- /* 
+  /*
   glColorMaterial ( GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE );
   glEnable ( GL_COLOR_MATERIAL );
   glLightfv(GL_LIGHT1, GL_AMBIENT, LightAmbient);	
@@ -63,6 +63,7 @@ void reshape(int w, int h)
 
 void createBall(int x, int y, int z, int color)
 {
+glEnable(GL_TEXTURE_2D);
 	//printf("CreateBall %i %i %i %i\n", x, y, z, color);
 	float ballSize = 0.3;
 	float xp = -1.5 + x;
@@ -74,9 +75,16 @@ void createBall(int x, int y, int z, int color)
 	glBegin(GL_TRIANGLES);
 		glColor3f(color, 1, color);		// warum hat glColor3f an dieser Stelle keine Wirkung, wenn man es nicht in einem glBegin glEnd Block aufruft ???
 	glEnd();
+glMatrixMode(GL_TEXTURE); 
+
+//glRotatef(0, 90, 0, 1);
+glScalef(2, 1, 1);
 
 	gluSphere(quadric,ballSize,32,32);
+glLoadIdentity();
+glMatrixMode(GL_MODELVIEW);
 	glPopMatrix();
+	glDisable(GL_TEXTURE_2D);
 }
 
 void drawPlayground(Playground* pg)
@@ -142,22 +150,41 @@ void keyboardFunc(unsigned char key, int mouseX, int mouseY)
 
 void displayTargets() {
 		//stäbe, 16 an der zahl!
+		glEnable(GL_TEXTURE_2D);
+		
+		
+		
 		for (int i=0;i<4;i++) {
 			for (int j=0;j<4;j++) {
+		
 			int stabId = i*4+j;
 			glLoadName(stabId);	// glLoadName darf nicht innerhalb eines glBegin GlEnd Blocks aufgerufen werden.
+
+
 			glBegin(GL_QUADS);
 				if (stabId == markedStab)
 					glColor3f(0.8, 0.5, 0);
 				else
 					glColor3f(.7f,0.35f,0.0f);	
+			glEnd();
 				float x = -1.5 + i;
 				float y = -1.5 + j;
+				glPushMatrix();
+			glTranslatef (x, y, 1.2);
+		gluCylinder(quadric, 0.1, 0.1, 2.5, 16, 16);
+		glPopMatrix();
+			/*	
+				glBegin(GL_QUADS);
+				if (stabId == markedStab)
+					glColor3f(0.8, 0.5, 0);
+				else
+					glColor3f(.7f,0.35f,0.0f);	
+				
 				//printf("Position: %f %f\n", x, y);
-				glVertex3f(x + 0.1, y + 0.1, 1.2); 
-				glVertex3f(x + 0.1, y + 0.1, 3.5); 
-				glVertex3f(x - 0.1, y + 0.1, 3.5); 
-				glVertex3f(x - 0.1, y + 0.1, 1.2);
+				glTexCoord2f(0.0f, 0.0f);	glVertex3f(x + 0.1, y + 0.1, 1.2); 
+				glTexCoord2f(0.0f, 1.0f);	glVertex3f(x + 0.1, y + 0.1, 3.5); 
+				glTexCoord2f(0.25f, 1.0f);	glVertex3f(x - 0.1, y + 0.1, 3.5); 
+				glTexCoord2f(0.25f, 0.0f);	glVertex3f(x - 0.1, y + 0.1, 1.2);
 				 
 				glVertex3f(x + 0.1, y - 0.1, 1.2); 
 				glVertex3f(x + 0.1, y - 0.1, 3.5); 
@@ -173,10 +200,12 @@ void displayTargets() {
 				glVertex3f(x - 0.1, y + 0.1, 3.5); 
 				glVertex3f(x - 0.1, y - 0.1, 3.5); 
 				glVertex3f(x - 0.1, y - 0.1, 1.2);
+				
 			glEnd();
-				 
+				*/ 
 			}		
-		}		
+		}	
+		glDisable(GL_TEXTURE_2D);	
 
 }
 
@@ -198,11 +227,11 @@ void display(void) {
 		//obere fläche	 
 		glTexCoord2f(0.0f, 0.0f);
 		glVertex3f( -2, 2, 1.2);	
-		glTexCoord2f(1.0f, 0.0f);	 
+		glTexCoord2f(2.0f, 0.0f);	 
 		glVertex3f( 2, 2, 1.2);	
-		glTexCoord2f(1.0f, 1.0f);	 
+		glTexCoord2f(2.0f, 2.0f);	 
 		glVertex3f( 2, -2, 1.2);	
-		glTexCoord2f(0.0f, 1.0f);	 
+		glTexCoord2f(0.0f, 2.0f);	 
 		glVertex3f( -2, -2, 1.2);	
 	glEnd();
 	glDisable(GL_TEXTURE_2D);
@@ -286,10 +315,10 @@ void loadTexture()
 	glBindTexture(GL_TEXTURE_2D, texture[0]);
 
 
-	/*
-    glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-    glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-*/
+	
+    glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_MIRRORED_REPEAT);
+    //glTexParameteri (GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_MIRRORED_REPEAT);
+
 
 	// Diese beiden Parameter müssen auf jedenfall gesetzt werden, 
 	// sonst wird die Textur nicht angezeigt !
