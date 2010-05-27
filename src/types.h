@@ -9,6 +9,9 @@
 
 #define switchColor(color) \
 	color == BLACK ? WHITE : BLACK
+
+#define max(a, b) \
+	a >= b ? a : b
 	
 #ifndef DEBUG
 #define dbgmsg(msg)
