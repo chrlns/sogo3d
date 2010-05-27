@@ -393,7 +393,7 @@ void init_gamewindow(int* argc, char **argv)
 {
 	glutInit(argc, argv);
     glutInitWindowSize(640, 480);   
-    glutInitDisplayMode(GLUT_DOUBLE); 
+    glutInitDisplayMode(GLUT_DOUBLE | GLUT_DEPTH); 
     glutCreateWindow("S O G O professional");
 
     glutDisplayFunc(display);
