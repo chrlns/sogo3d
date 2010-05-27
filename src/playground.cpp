@@ -140,6 +140,12 @@ void Playground::set (uint8_t x, uint8_t y, uint8_t z, uint8_t value)
 	this->cols[x][y] |= value << (z * 2);
 }
 
+// Sucht nach drei Kugeln in einer Reihe der angegeben Farbe, bei denen
+// die Position der 4. Kugel setzbar ist.
+int Playground::winLines3(int color, int* x, int* y)
+{
+}
+
 // Bewertung des aktuellen Spielfeldes.
 // Je besser das Spielfeld für die gegebene Farbe ist, desto höher ist
 // der Wert.
