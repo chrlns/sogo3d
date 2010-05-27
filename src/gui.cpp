@@ -7,7 +7,7 @@
 #include <math.h>
 #include "BMPLoader.h"
 #include "playground.h"
-//#include "game.h"
+#include "game.h"
 
 extern Playground* currentPlayground;
 
@@ -385,7 +385,8 @@ void mouse(int button, int state, int x, int y)
 	dbgmsg("Klick " << markedStab << " " << x << " " << y);
 	currentPlayground->move(x, y);
 	glutPostRedisplay();
-	//minimax(currentPlayground, BLACK, 1);
+	minimax(currentPlayground, BLACK, 4);
+	glutPostRedisplay();
 }
 
 void init_gamewindow(int* argc, char **argv) 
