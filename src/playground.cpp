@@ -142,7 +142,7 @@ void Playground::set (uint8_t x, uint8_t y, uint8_t z, uint8_t value)
 
 // Sucht nach drei Kugeln in einer Reihe der angegeben Farbe, bei denen
 // die Position der 4. Kugel setzbar ist.
-int Playground::winLines3(int color, int* x, int* y)
+bool Playground::winLines3(int color, int* x, int* y)
 {
 }
 
