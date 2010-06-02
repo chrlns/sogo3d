@@ -144,15 +144,12 @@ void Playground::set (uint8_t x, uint8_t y, uint8_t z, uint8_t value)
 
 // Sucht nach drei Kugeln in einer Reihe der angegeben Farbe, bei denen
 // die Position der 4. Kugel setzbar ist.
-bool Playground::winLines3(int color, int* x, int* y)
+bool Playground::hasLines3(int color, int* x, int* y)
 {
 }
 
-// Bewertung des aktuellen Spielfeldes.
-// Je besser das Spielfeld für die gegebene Farbe ist, desto höher ist
-// der Wert.
-// returns [0 - MAX_RATING]
-int Playground::rating(int color)
+// Bewertung des aktuellen Spielfeldes aus der Sicht von Schwarz
+int Playground::rating()
 {
 	int ratingVal=0;
 

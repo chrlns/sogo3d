@@ -29,9 +29,9 @@ class Playground
 		// wenn der Zug möglich war, anderfalls false
 		bool move(int x, int y);
 
-		bool winLines3(int color, int* x, int* y);
+		bool hasLines3(int color, int* x, int* y);
 
-		int rating(int color);
+		int rating();
 };
 
 #endif
