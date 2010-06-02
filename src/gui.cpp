@@ -50,6 +50,7 @@ void reshape(int w, int h)
  glMatrixMode( GL_MODELVIEW );
   glLoadIdentity();
   glEnable( GL_DEPTH_TEST );
+  glDepthFunc(GL_LEQUAL);
   /*
   glColorMaterial ( GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE );
   glEnable ( GL_COLOR_MATERIAL );
@@ -81,6 +82,13 @@ glMatrixMode(GL_TEXTURE);
 glScalef(2, 1, 1);
 
 	gluSphere(quadric,ballSize,32,32);
+	//if (color == 1) {
+		glEnable(GL_BLEND);	
+		glBlendFunc(GL_ONE, GL_ONE);
+		gluSphere(quadric,ballSize,32,32);
+		glDisable(GL_BLEND);
+	//}
+	
 glLoadIdentity();
 glMatrixMode(GL_MODELVIEW);
 	glPopMatrix();
@@ -172,6 +180,8 @@ void displayTargets() {
 				glPushMatrix();
 			glTranslatef (x, y, 1.2);
 		gluCylinder(quadric, 0.1, 0.1, 2.5, 16, 16);
+		glTranslatef(0, 0, 2.5);
+		gluDisk(quadric, 0, 0.1, 16, 1);
 		glPopMatrix();
 			/*	
 				glBegin(GL_QUADS);
@@ -227,11 +237,11 @@ void display(void) {
 		//obere fläche	 
 		glTexCoord2f(0.0f, 0.0f);
 		glVertex3f( -2, 2, 1.2);	
-		glTexCoord2f(2.0f, 0.0f);	 
+		glTexCoord2f(1.0f, 0.0f);	 
 		glVertex3f( 2, 2, 1.2);	
-		glTexCoord2f(2.0f, 2.0f);	 
+		glTexCoord2f(1.0f, 1.0f);	 
 		glVertex3f( 2, -2, 1.2);	
-		glTexCoord2f(0.0f, 2.0f);	 
+		glTexCoord2f(0.0f, 1.0f);	 
 		glVertex3f( -2, -2, 1.2);	
 	glEnd();
 	glDisable(GL_TEXTURE_2D);
