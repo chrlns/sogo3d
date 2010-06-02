@@ -151,7 +151,7 @@ bool Playground::hasLines3(int color, int* x, int* y)
 // Bewertung des aktuellen Spielfeldes aus der Sicht von Schwarz
 int Playground::rating()
 {
-	int ratingVal=0;
+	/*int ratingVal=0;
 
 	// clone playground 
 
@@ -267,7 +267,17 @@ int Playground::rating()
 	       ratingVal++;
 	    }    
 	} 
-	return ratingVal +abs(rand()/100);
+	return ratingVal +abs(rand()/100);*/
+
+	if(isGameOver() == WHITE)
+	{
+		return -MAX_RATING;
+	}
+	else if(isGameOver() == BLACK)
+	{
+		return MAX_RATING;
+	}
+	return 0;
 }
 
 Playground* Playground::clone()
