@@ -33,7 +33,7 @@ int Playground::isGameOver()
 		}
 	}
 
-	// horizontal lines direction: [x]
+	// horizontal lines direction: [x] ------------------------------------------------------------
 	for(int y = 0; y < 4; y++)
 	{
 		for(int z = 0; z < 4; z++)
@@ -48,9 +48,9 @@ int Playground::isGameOver()
 	}
 
 	// horizontal lines direction: [y]
-	for(int x=0;x<=3;x++)
+	for(int x = 0; x <4 ; x++)
 	{
-		for(int z=0;z<=3;z++)
+		for(int z = 0; z < 4; z++)
 		{                   
 			if( (get(x, 0, z)!=EMPTY) && (get(x, 0, z)==get(x, 1, z)) && (get(x, 1, z)==get(x, 2, z)) && (get(x, 2, z)==get(x, 3, z)) )
 			{
@@ -60,9 +60,9 @@ int Playground::isGameOver()
 		}
 	}
 
-	// diagonal bars (low to high)
+	// diagonal bars (low to high) ------------------------------------------------------------------------
 	// direction: [x]
-	/*for(int y=0;y<=3;y++)
+	for(int y = 0; y < 4; y++)
 	{
 		if( (get(0,y,0)!=EMPTY) && (get(0,y,0)==get(1,y,1)) && (get(1,y,1)==get(2,y,2)) && (get(2,y,2)==get(3,y,3)) )
 		{ 
@@ -76,7 +76,7 @@ int Playground::isGameOver()
 	}
 
 	// direction: [y] (low to high)
-	for(int x=0;x<=3;x++)
+	for(int x = 0; x < 4; x++)
 	{
 		if( (get(x,0,0)!=EMPTY) && (get(x,0,0)==get(x,1,1)) && (get(x,1,1)==get(x,2,2)) && (get(x,2,2)==get(x,3,3)) )
 		{ 
@@ -89,7 +89,8 @@ int Playground::isGameOver()
 		}
 	}
 
-	// inner diagonal cross (low to high)
+/*
+	// inner diagonal cross (low to high) --------------------------------------------------------------
 	if( (get(0,0,0)!=EMPTY) && (get(0,0,0)==get(1,1,1)) &&(get(1,1,1)==get(2,2,2)) && (get(2,2,2)==get(3,3,3)) )
 	{ 
 		return get(0,0,0); // eigentlich besser erst auf 3,3,3 zu testen da unwahrscheinlicher
