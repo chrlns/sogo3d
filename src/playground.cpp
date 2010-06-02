@@ -20,11 +20,12 @@ int Playground::isGameOver()
 {
 
 	// Vertical staves
-	for(int x=0;x<=3;x++)
+	for(int x = 0; x < 4; x++)
 	{
-		for(int y=0;y<=3;y++)
+		for(int y = 0 ; y < 4; y++)
 		{                   
-			if( (get(x, y, 0)!=EMPTY) && (get(x, y, 0)==get(x, y, 1)) && (get(x, y, 1)==get(x, y, 2)) && (get(x, y, 2)==get(x, y, 3)) )
+			if((get(x, y, 0)!=EMPTY) 
+			&& (get(x, y, 0)==get(x, y, 1)) && (get(x, y, 1)==get(x, y, 2)) && (get(x, y, 2)==get(x, y, 3)) )
 			{
 				//winner=get(x,y,0);
 				return get(x,y,0);
@@ -33,11 +34,12 @@ int Playground::isGameOver()
 	}
 
 	// horizontal lines direction: [x]
-	for(int y=0;y<=3;y++)
-		{
-		for(int z=0;z<=3;z++)
+	for(int y = 0; y < 4; y++)
+	{
+		for(int z = 0; z < 4; z++)
 		{                   
-			if( (get(0, y, z)!=EMPTY) && (get(1, y, z)==get(2, y, z)) && (get(2, y, z)==get(3, y, z)) && (get(3, y, z)==get(4, y, z)) )
+			if((get(0, y, z)!=EMPTY) 
+			&& (get(0, y, z)==get(1, y, z)) && (get(1, y, z)==get(2, y, z)) && (get(2, y, z)==get(3, y, z)) )
 			{
 				// winner=get(0, y, z);
 				return get(0, y, z);
@@ -60,7 +62,7 @@ int Playground::isGameOver()
 
 	// diagonal bars (low to high)
 	// direction: [x]
-	for(int y=0;y<=3;y++)
+	/*for(int y=0;y<=3;y++)
 	{
 		if( (get(0,y,0)!=EMPTY) && (get(0,y,0)==get(1,y,1)) && (get(1,y,1)==get(2,y,2)) && (get(2,y,2)==get(3,y,3)) )
 		{ 
@@ -121,7 +123,7 @@ int Playground::isGameOver()
 	    {
 	       return get(0,3,z);
 	    }    
-	} 
+	}*/
 	return 0;
 }
 
