@@ -133,4 +133,8 @@ int minimax(Playground* root, int color, int horizon)
 	dbgmsg("Minimax: " << minmax);
 	dbgmsg("Idealer Zug: " << optX << " " << optY);
 	root->move(optX, optY);
+	if(root->isGameOver() != EMPTY) 
+	{
+		dbgmsg("Spiel ist zu Ende!");		
+	}
 }
