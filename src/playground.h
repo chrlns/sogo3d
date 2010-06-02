@@ -8,7 +8,7 @@
 
 class Playground
 {
-	protected:
+	public:
 		uint8_t cols[4][4]; // 4x4 Säulen
 		//playground_t playground;
 		int turnColor; // WHITE begins
