@@ -81,7 +81,7 @@ int negamax(Playground* root, int horizon, int alpha, int beta, int color, int* 
 {
 	if(horizon <= 0 || root->isGameOver() != EMPTY) 
 	{
-		return color == BLACK ? root->rating(color) : -root->rating(color);
+		return color == BLACK ? root->rating() : -root->rating();
 	} 
 	else 
 	{
