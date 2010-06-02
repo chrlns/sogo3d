@@ -77,11 +77,16 @@ int max(Playground* root, int horizon, int color, int* ox, int* oy)
 }*/
 
 // Nach: http://en.wikipedia.org/wiki/Negamax
-int negamax(Playground* root, int horizon, int alpha, int beta, int color, int* ox, int* oy)
+int negamax(Playground* root, int horizon, int alpha, int beta, int color/*, int* ox, int* oy*/)
 {
 	if(horizon <= 0 || root->isGameOver() != EMPTY) 
 	{
-		return color == BLACK ? root->rating() : -root->rating();
+		int rating = color == BLACK ? root->rating() : root->rating();
+		if(rating != 0)
+		{
+			dbgmsg("Negamax returns root->rating() = " << rating);
+		}
+		return rating;
 	} 
 	else 
 	{
@@ -93,12 +98,12 @@ int negamax(Playground* root, int horizon, int alpha, int beta, int color, int* 
 				Playground* pg = root->clone();
 				if(pg->move(x, y))
 				{
-					int optX = x;
-					int optY = y;
+					//int optX = x;
+					//int optY = y;
 					// Das neue Spielfeld ist gültig und sollte weiter untersucht
-					alpha = max(alpha, -negamax(pg, horizon - 1, -beta, -alpha, switchColor(color), &optX, &optY));
-					if(alpha >= beta)
-						return alpha;
+					alpha = max(alpha, -negamax(pg, horizon - 1, -beta, -alpha, switchColor(color)/*, &optX, &optY*/));
+					//if(alpha >= beta)
+					//	return beta;
 				}
 				delete pg;
 			}
@@ -119,17 +124,26 @@ int minimax(Playground* root, int color, int horizon)
 	int optY 	= -1;
 	int minmax	= color == BLACK ? -MAX_RATING : MAX_RATING; // Mit den jeweiligen Worstcase-Werten initialisieren
 
+	// Wir führen den ersten Schritt manuell aus, da wir wissen wollen, in
+	// welche Richtung wir weiterlaufen sollen.
 	for(int x = 0; x < 4; x++)
+	{
 		for(int y = 0; y < 4; y++)
 		{
-			int v = negamax(root, horizon, -MAX_RATING, MAX_RATING, color, &optX, &optY);
-			if((v > minmax && color == BLACK) || (v < minmax && color == WHITE))
+			Playground* pg = root->clone();
+			if(pg->move(x, y))
 			{
-				optX = x;
-				optY = y;
-				minmax = v;
+				int v = negamax(root, horizon, -MAX_RATING, MAX_RATING, color);
+				if((v > minmax && color == BLACK) || (v < minmax && color == WHITE))
+				{
+					optX = x;
+					optY = y;
+					minmax = v;
+				}
 			}
+			delete pg;
 		}
+	}
 	dbgmsg("Minimax: " << minmax);
 	dbgmsg("Idealer Zug: " << optX << " " << optY);
 	root->move(optX, optY);
