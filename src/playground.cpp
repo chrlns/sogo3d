@@ -89,7 +89,7 @@ int Playground::isGameOver()
 		}
 	}
 
-/*
+
 	// inner diagonal cross (low to high) --------------------------------------------------------------
 	if( (get(0,0,0)!=EMPTY) && (get(0,0,0)==get(1,1,1)) &&(get(1,1,1)==get(2,2,2)) && (get(2,2,2)==get(3,3,3)) )
 	{ 
@@ -124,7 +124,7 @@ int Playground::isGameOver()
 	    {
 	       return get(0,3,z);
 	    }    
-	}*/
+	}
 	return 0;
 }
 
