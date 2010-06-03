@@ -89,7 +89,7 @@ int minimax(Playground* root, int color, int horizon)
 			{
 				int v = negamax(pg, horizon, -MAX_RATING, MAX_RATING, switchColor(color));
 				dbgmsg("Zug " << x << " " << y << " ergebnis " << v);
-				if((v > minmax && color == BLACK) || (v < minmax && color == WHITE))
+				if((v >= minmax && color == BLACK) || (v <= minmax && color == WHITE))
 				{
 					optX = x;
 					optY = y;
