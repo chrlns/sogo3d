@@ -76,7 +76,7 @@ int minimax(Playground* root, int color, int horizon)
 {
 	int optX 	= -1;
 	int optY 	= -1;
-	int minmax	= color == BLACK ? -MAX_RATING : MAX_RATING; // Mit den jeweiligen Worstcase-Werten initialisieren
+	int minmax	= color == BLACK ? -(MAX_RATING + 1) : (MAX_RATING + 1); // Mit den jeweiligen Worstcase-Werten initialisieren
 
 	// Wir führen den ersten Schritt manuell aus, da wir wissen wollen, in
 	// welche Richtung wir weiterlaufen sollen.
@@ -89,7 +89,7 @@ int minimax(Playground* root, int color, int horizon)
 			{
 				int v = negamax(pg, horizon, -MAX_RATING, MAX_RATING, switchColor(color));
 				dbgmsg("Zug " << x << " " << y << " ergebnis " << v);
-				if((v >= minmax && color == BLACK) || (v <= minmax && color == WHITE))
+				if((v > minmax && color == BLACK) || (v < minmax && color == WHITE))
 				{
 					optX = x;
 					optY = y;
