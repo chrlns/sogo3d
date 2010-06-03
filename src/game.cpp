@@ -1,10 +1,19 @@
 #include "playground.h"
+#include "game.h"
+#include <pthread.h>
+#include <assert.h>
+
+int threadResults[16];
+pthread_t       sysThreadHandle[16];
+pthread_attr_t  sysThreadAttrib[16];
+uint64_t		children = 0;
 
 // alpha: untere Grenze
 // beta: obere Grenze
 // Methodname ist falsch, nicht wirklich Negamax
 int negamax(Playground* root, int horizon, int alpha, int beta, int color/*, int* ox, int* oy*/)
 {
+	children++;
 	if(horizon <= 0 || root->isGameOver() != 0) 
 	{
 	/*	int rating = color == BLACK ? root->rating() : -root->rating();
@@ -32,7 +41,7 @@ int negamax(Playground* root, int horizon, int alpha, int beta, int color/*, int
 					{
 						// Wir suchen das Maximum
 						value = negamax(pg, horizon - 1, alpha, rating, switchColor(color));
-						if(value <= alpha)
+						if(value < alpha)
 						{
 							//dbgmsg("Gekürzt Maximum!");
 							delete pg;
@@ -44,7 +53,7 @@ int negamax(Playground* root, int horizon, int alpha, int beta, int color/*, int
 					{
 						// Wir suchen das Minimum
 						value = negamax(pg, horizon - 1, rating, beta, switchColor(color));
-						if(value >= beta)
+						if(value > beta)
 						{
 							//dbgmsg("Gekürzt Minimum!");
 							delete pg;
@@ -66,6 +75,14 @@ int negamax(Playground* root, int horizon, int alpha, int beta, int color/*, int
 	}
 }
 
+void* enterThread(void* args)
+{
+	thread_args* targs = (thread_args*)args;
+	threadResults[targs->number] = negamax(targs->playground, targs->horizon, targs->alpha, targs->beta, targs->color);
+	delete targs->playground;
+	delete targs;
+}
+
 /*
  * Führt den Minimax-Algorithmus aus.
  * root: aktuelles Spielfeld
@@ -74,6 +91,7 @@ int negamax(Playground* root, int horizon, int alpha, int beta, int color/*, int
  */
 int minimax(Playground* root, int color, int horizon)
 {
+	children = 0;
 	int optX 	= -1;
 	int optY 	= -1;
 	int minmax	= color == BLACK ? -(MAX_RATING + 1) : (MAX_RATING + 1); // Mit den jeweiligen Worstcase-Werten initialisieren
@@ -85,9 +103,40 @@ int minimax(Playground* root, int color, int horizon)
 		for(int y = 0; y < 4; y++)
 		{
 			Playground* pg = root->clone();
+			int n = x * 4 + y;
 			if(pg->move(x, y))
 			{
-				int v = negamax(pg, horizon, -MAX_RATING, MAX_RATING, switchColor(color));
+				//int v = negamax(pg, horizon, -MAX_RATING, MAX_RATING, switchColor(color));
+				thread_args_t* args = new thread_args();
+				args->playground	= pg;
+				args->horizon		= horizon;
+				args->alpha			= -MAX_RATING;
+				args->beta			= MAX_RATING;
+				args->color			= switchColor(color);
+				args->number		= n;
+
+				// Run thread
+				assert(pthread_create(&(sysThreadHandle[n]), NULL, enterThread, args) == 0);
+			}
+			else
+			{
+				sysThreadHandle[n] = 0;
+			}
+			//delete pg;
+		}
+	}
+
+	for(int x = 0; x < 4; x++)
+	{
+		for(int y = 0; y < 4; y++)
+		{
+			int n = x * 4 + y;
+			if(sysThreadHandle[n] != 0)
+			{
+				dbgmsg("Waiting for Thread #" << n);
+			
+				pthread_join(sysThreadHandle[n], NULL);
+				int v = threadResults[n];
 				dbgmsg("Zug " << x << " " << y << " ergebnis " << v);
 				if((v > minmax && color == BLACK) || (v < minmax && color == WHITE))
 				{
@@ -96,11 +145,12 @@ int minimax(Playground* root, int color, int horizon)
 					minmax = v;
 				}
 			}
-			delete pg;
 		}
 	}
+
 	dbgmsg("Minimax: " << minmax);
 	dbgmsg("Idealer Zug: " << optX << " " << optY);
+	dbgmsg("Kinder: " << children);
 	root->move(optX, optY);
 	if(root->isGameOver() != EMPTY) 
 	{

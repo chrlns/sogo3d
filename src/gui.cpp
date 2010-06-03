@@ -425,7 +425,7 @@ void mouse(int button, int state, int x, int y)
 	dbgmsg("Klick " << markedStab << " " << x << " " << y);
 	currentPlayground->move(x, y);
 	glutPostRedisplay();
-	minimax(currentPlayground, BLACK, 5);
+	minimax(currentPlayground, BLACK, 7);
 	glutPostRedisplay();
 }
 
@@ -441,7 +441,7 @@ void init_gamewindow(int* argc, char **argv)
    	glutKeyboardFunc(keyboardFunc);
    	glutMouseFunc(mouse);  
    	glutPassiveMotionFunc(mouseMotion);
-   	glutIdleFunc(display);
+   	//glutIdleFunc(display);
    	// Texturen dürfen erst hier geladen werden, da vorher u.U. noch
    	// kein OpenGL Kontext existiert
    	loadTexture();
