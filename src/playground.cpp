@@ -152,6 +152,12 @@ bool Playground::hasLines3(int color, int* x, int* y)
 // Bewertung des aktuellen Spielfeldes aus der Sicht von Schwarz
 int Playground::rating()
 {
+	
+	// auf siegbrett prüfen
+	// auf offene 3er lines prüfen
+	// wenn mehrere 3er lines gefunden, prüfen ob die fehlende kugel bei bei den beiden lines die selbe ist (ob beide offenen lines sich mit der selben kugel "schliessen lassen"
+	
+	
 	/*int ratingVal=0;
 
 	// clone playground 
