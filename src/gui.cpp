@@ -219,16 +219,17 @@ void displayTargets() {
 
 }
 
-void display(void) {
- glLoadIdentity();
-   gluLookAt(sin(camDegree) *  camDistance, cos(camDegree) * camDistance, cameraHeigth, 0, 0, 0, 0, 0, 1);
+void display(void) 
+{
+	glLoadIdentity();
+	gluLookAt(sin(camDegree) *  camDistance, cos(camDegree) * camDistance, cameraHeigth, 0, 0, 0, 0, 0, 1);
 	glScalef(0.3, 0.3, 0.3);
-     glColor3f(0.0f,0.0f,0.0f);
-	  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glClearColor(0.0f, 0.2f, 0.7f, 0.0f);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	 
 	 // gluLookAt(sin(camDegree) *  4, cos(camDegree) * 4, cameraHeigth, 0, 0, 0, 0, 0, 1);
-	glEnable(GL_TEXTURE_2D);
-	glBindTexture(GL_TEXTURE_2D, texture[0]);
+	//glEnable(GL_TEXTURE_2D);
+	//glBindTexture(GL_TEXTURE_2D, texture[0]);
 
 
 	glBegin(GL_QUADS);
