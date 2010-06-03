@@ -152,9 +152,146 @@ bool Playground::hasLines3(int color, int* x, int* y)
 // Bewertung des aktuellen Spielfeldes aus der Sicht von Schwarz
 int Playground::rating()
 {
-	
+	int rating = 0;
+	int threefoldWhite = 0;
+	int threefoldBlack = 0;
+	int countBlack = 0;
+	int countWhite = 0;
+	int countEmpty = 0;
+	int count = 0;
+	// #############################################################
 	// auf siegbrett prüfen
+	// testen ob weiss oder schwarz gewonnen hat & entsprechend bewerten
+
+	if(isGameOver() == WHITE)
+	{
+		rating -= 500;
+	} 
+	else if(isGameOver() == BLACK)
+	{
+		rating += 500;
+	}
+	
+
+	// #############################################################
 	// auf offene 3er lines prüfen
+	
+
+	// threefold on vertical staves
+	for(int x = 0; x < 4; x++)
+	{
+		for(int y = 0 ; y < 4; y++)
+		{                   
+			if((get(x, y, 0)!=EMPTY) 
+			&& (get(x, y, 0)==get(x, y, 1)) && (get(x, y, 1)==get(x, y, 2))
+			&& (get(x, y, 3)==EMPTY) )
+			{
+				// testen ob schwarz oder weiss
+				if((get(x, y, 0)==BLACK))
+				{
+					threefoldBlack++;
+				}
+				else
+				{	
+					threefoldWhite++;
+				}
+				// entsprechend bewerten
+			}
+		}
+	}
+
+	// threefold on horizontal lines direction: [x] ------------------------------------------------------------
+	for(int y = 0; y < 4; y++)
+	{
+		for(int z = 0; z < 4; z++)
+		{                   
+
+			for(int x = 0; x < 4; x++)
+			{
+				int actualColor = get(x, y, z);
+				if( actualColor == EMPTY )
+				{ 	
+					countEmpty++;
+					if(countEmpty > 1)
+					{
+						break;
+					}
+				}
+				else if(actualColor == BLACK)
+				{ 
+					countBlack++;
+				}
+				else
+				{ 
+					countWhite++;
+				}
+				
+				if(countBlack>countWhite)
+				{
+					rating++;
+				}
+				else
+				{
+					rating--;
+				}
+			}
+			countBlack=0;
+			countWhite=0;
+			countEmpty=0;
+		}
+	}
+	countBlack=0;
+	countWhite=0;
+	countEmpty=0;
+	// threefold on horizontal lines direction: [y]
+	for(int x = 0; x <4 ; x++)
+	{
+		for(int z = 0; z < 4; z++)
+		{                   
+			for(int y = 0; y < 4; y++)
+			{
+				int actualColor = get(x, y, z);
+				if( actualColor == EMPTY )
+				{ 	
+					countEmpty++;
+					if(countEmpty > 1)
+					{
+						break;
+					}
+				}
+				else if(actualColor == BLACK)
+				{ 
+					countBlack++;
+				}
+				else
+				{ 
+					countWhite++;
+				}
+				
+				if(countBlack>countWhite)
+				{
+					rating++;
+				}
+				else
+				{
+					rating--;
+				}
+			}
+			countBlack=0;
+			countWhite=0;
+			countEmpty=0;
+		}
+	}
+
+	// wenn 3er line gefunden, checkn ob schwarz oder weiss
+
+	// entsprechend (ob schwarz oder weiss) bewertung vornehmen
+	
+	rating += threefoldBlack;
+	rating -= threefoldWhite;
+
+	return rating;
+	// #############################################################
 	// wenn mehrere 3er lines gefunden, prüfen ob die fehlende kugel bei bei den beiden lines die selbe ist (ob beide offenen lines sich mit der selben kugel "schliessen lassen"
 	
 	
@@ -174,7 +311,8 @@ int Playground::rating()
 	}
 
 	// now check how many winning combinations are left 
-		// Vertical staves
+	
+	// Vertical staves
 	for(int x=0;x<=3;x++)
 	{
 		for(int y=0;y<=3;y++)
@@ -274,7 +412,7 @@ int Playground::rating()
 	       ratingVal++;
 	    }    
 	} 
-	return ratingVal +abs(rand()/100);*/
+	return ratingVal +abs(rand()/100);
 
 	if(isGameOver() == WHITE)
 	{
@@ -285,6 +423,7 @@ int Playground::rating()
 		return MAX_RATING;
 	}
 	return 0;
+*/
 }
 
 Playground* Playground::clone()
