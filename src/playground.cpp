@@ -2,6 +2,9 @@
 #include "types.h"
 #include <cstdlib>
 #include <cstring>
+#include <map>
+
+//std::map<uint64_t, std::map<uint64_t, int16_t>> ratings;
 
 Playground::Playground()
 {	
@@ -176,6 +179,9 @@ bool Playground::hasLines3(int color, int* x, int* y)
 // Bewertung des aktuellen Spielfeldes aus der Sicht von Schwarz
 int Playground::rating()
 {
+	// Erstmal im Cache nachgucken, ob da was drin ist
+	//ratings[][]
+	
 	int rating = 0;
 	int threefoldWhite = 0;
 	int threefoldBlack = 0;
