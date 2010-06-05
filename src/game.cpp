@@ -16,13 +16,6 @@ int negamax(Playground* root, int horizon, int alpha, int beta, int color/*, int
 	children++;
 	if(horizon <= 0 || root->isGameOver() != 0) 
 	{
-	/*	int rating = color == BLACK ? root->rating() : -root->rating();
-		if(rating != 0)
-		{
-			dbgmsg("Negamax returns root->rating() = " << rating);
-		}
-		return rating;
-		* */
 		return root->rating();
 	} 
 	else 
