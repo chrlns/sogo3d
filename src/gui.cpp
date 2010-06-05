@@ -10,6 +10,8 @@
 #include "game.h"
 
 extern Playground* currentPlayground;
+extern bool enableZBuffer;
+extern int horizon;
 
 int windowWidth;
 int windowHeigth;
@@ -49,8 +51,12 @@ void reshape(int w, int h)
 //glRotatef(1, 0, 0, 1);
  glMatrixMode( GL_MODELVIEW );
   glLoadIdentity();
-  glEnable( GL_DEPTH_TEST );
-  glDepthFunc(GL_LEQUAL);
+
+	if(enableZBuffer)
+	{
+		glEnable(GL_DEPTH_TEST);
+		glDepthFunc(GL_LEQUAL);
+	}
   /*
   glColorMaterial ( GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE );
   glEnable ( GL_COLOR_MATERIAL );
@@ -425,7 +431,7 @@ void mouse(int button, int state, int x, int y)
 	dbgmsg("Klick " << markedStab << " " << x << " " << y);
 	currentPlayground->move(x, y);
 	glutPostRedisplay();
-	minimax(currentPlayground, BLACK, 10);
+	minimax(currentPlayground, BLACK, horizon);
 	glutPostRedisplay();
 }
 

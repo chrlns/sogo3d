@@ -2,32 +2,45 @@
 #include "types.h"
 #include "playground.h"
 #include <stdint.h>
-#include <iostream>
 #include <GL/glut.h>
+#include <iostream>
+#include <string>
 
 Playground* currentPlayground = NULL;
-
-/*
- * Führt einen Spielzug aus. Diese Methode wird entweder aufgerufen,
- * wenn der menschliche Spieler eine Kugel legt oder die KI für den Computer-
- * spieler einen neuen Spielzug berechnet hat.
- * color: Farbe des Spielers
- * x, y, z: Position der neuen Kugel
- * playground: aktueller Spielstatus
- */
-int move(int color, int x, int y, int z, Playground* playground)
-{
-	return 0;
-}
+bool enableZBuffer = true;
+int horizon = 4;
 
 int main(int argc, char* argv[])
 {
- 	/* Startet die grafische Oberfläche */
+	// Parse command line arguments
+	for(int n = 1; n < argc; n++)
+	{
+		std::string arg = std::string(argv[n]);
+		if(arg == "-z" || arg == "--no-zbuffer")
+		{
+			enableZBuffer = false;
+			continue;
+		}
+		if(arg == "-r" || arg == "--horizon")
+		{
+			horizon = atoi(argv[++n]);
+			continue;
+		}
+		if(arg == "-h" || arg == "--help")
+		{
+			std::cout << "Parameter" << std::endl;
+			std::cout << "-z|--no-zbuffer\tDisables depth buffering" << std::endl;
+			std::cout << "-r|--horizon <num>\tNumber of recursions (horizon)" << std::endl;
+		}
+	}
+	
+ 	// Start GUI
 	init_gamewindow(&argc, argv);
  
-	/* Leeren Playground erzeugen */
+	// Create empty playground
 	currentPlayground = new Playground();
 
+	// Start GLUT Event loop. Method returns when the game window is closed.
 	glutMainLoop();
 
  	delete currentPlayground;
