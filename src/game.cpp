@@ -41,7 +41,7 @@ int negamax(Playground* root, int horizon, int alpha, int beta, int color/*, int
 					{
 						// Wir suchen das Maximum
 						value = negamax(pg, horizon - 1, alpha, rating, switchColor(color));
-						if(value <= alpha)
+						if(value < alpha)
 						{
 							//dbgmsg("Gekürzt Maximum!");
 							delete pg;
@@ -53,7 +53,7 @@ int negamax(Playground* root, int horizon, int alpha, int beta, int color/*, int
 					{
 						// Wir suchen das Minimum
 						value = negamax(pg, horizon - 1, rating, beta, switchColor(color));
-						if(value >= beta)
+						if(value > beta)
 						{
 							//dbgmsg("Gekürzt Minimum!");
 							delete pg;
@@ -81,6 +81,7 @@ void* enterThread(void* args)
 	threadResults[targs->number] = negamax(targs->playground, targs->horizon, targs->alpha, targs->beta, targs->color);
 	delete targs->playground;
 	delete targs;
+	return NULL;
 }
 
 /*
@@ -160,4 +161,5 @@ int minimax(Playground* root, int color, int horizon)
 	{
 		dbgmsg("Am Zug ist " << root->turnColor);
 	}
+	return 0;
 }

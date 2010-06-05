@@ -147,6 +147,7 @@ void Playground::set (uint8_t x, uint8_t y, uint8_t z, uint8_t value)
 // die Position der 4. Kugel setzbar ist.
 bool Playground::hasLines3(int color, int* x, int* y)
 {
+	return false;
 }
 
 // Bewertung des aktuellen Spielfeldes aus der Sicht von Schwarz
@@ -165,11 +166,13 @@ int Playground::rating()
 
 	if(isGameOver() == WHITE)
 	{
-		rating -= 500;
+		//rating -= 500;
+		return -MAX_RATING;
 	} 
 	else if(isGameOver() == BLACK)
 	{
-		rating += 500;
+		//rating += 500;
+		return MAX_RATING;
 	}
 	
 
