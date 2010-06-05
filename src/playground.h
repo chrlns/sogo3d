@@ -8,6 +8,9 @@
 
 class Playground
 {
+	private:
+		int8_t winnerCache;
+	
 	public:
 		uint8_t cols[4][4]; // 4x4 Säulen
 		//playground_t playground;
