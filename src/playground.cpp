@@ -415,17 +415,6 @@ int Playground::rating()
 	       ratingVal++;
 	    }    
 	} 
-	return ratingVal +abs(rand()/100);
-
-	if(isGameOver() == WHITE)
-	{
-		return -MAX_RATING;
-	}
-	else if(isGameOver() == BLACK)
-	{
-		return MAX_RATING;
-	}
-	return 0;
 */
 }
 
