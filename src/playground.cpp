@@ -194,7 +194,7 @@ int Playground::rating()
 	// #############################################################
 	// auf siegbrett prüfen
 	// testen ob weiss oder schwarz gewonnen hat & entsprechend bewerten
-
+/*
 	if(isGameOver() == WHITE)
 	{
 		//rating -= 500;
@@ -206,7 +206,7 @@ int Playground::rating()
 		return MAX_RATING;
 	}
 	
-
+*/
 	// #############################################################
 	// auf offene 3er lines prüfen
 	
@@ -230,7 +230,7 @@ int Playground::rating()
 					threefoldWhite++;
 				}
 				// entsprechend bewerten
-				//dbgmsg("3er gefunden vertical");
+
 			}
 		}
 	}
@@ -307,9 +307,17 @@ int Playground::rating()
 				
 				if(countBlack == 3 && countEmpty == 1)
 				{
-					rating++;
+					rating=rating+2;
 				}
 				else if (countWhite == 3 && countEmpty == 1)
+				{
+					rating=rating-2;					
+				}
+				else if(countBlack == 2 && countEmpty == 2)
+				{	
+					rating++;
+				}	
+				else if(countWhite == 2 && countEmpty == 2)
 				{
 					rating--;
 				}
