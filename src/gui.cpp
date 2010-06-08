@@ -432,6 +432,7 @@ void mouse(int button, int state, int x, int y)
 	currentPlayground->move(x, y);
 	glutPostRedisplay();
 	minimax(currentPlayground, BLACK, horizon);
+	printf("Bewertung aktuelles Spielfeld: %i\n", currentPlayground->rating());
 	glutPostRedisplay();
 }
 
