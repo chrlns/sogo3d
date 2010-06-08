@@ -230,7 +230,7 @@ int Playground::rating()
 					threefoldWhite++;
 				}
 				// entsprechend bewerten
-				dbgmsg("3er gefunden vertical");
+				//dbgmsg("3er gefunden vertical");
 			}
 		}
 	}

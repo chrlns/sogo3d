@@ -14,13 +14,13 @@ uint64_t		children = 0;
 int negamax(Playground* root, int horizon, int alpha, int beta, int color/*, int* ox, int* oy*/)
 {
 	children++;
-	if(horizon <= 0 || root->isGameOver() != 0) 
+	if(horizon <= 0) // || root->isGameOver() != 0) 
 	{
 		return root->rating();
 	} 
 	else 
 	{
-		int rating = 0;
+		int rating = root->rating();
 		// Für jeden möglichen Zug muss ein Unterbaum erzeugt werden
 		for(int x = 0; x < 4; x++)
 		{
@@ -32,6 +32,7 @@ int negamax(Playground* root, int horizon, int alpha, int beta, int color/*, int
 					int value;
 					if(color == BLACK)
 					{
+						//dbgmsg("Bewertung " << pg->rating());
 						// Wir suchen das Maximum
 						value = negamax(pg, horizon - 1, alpha, rating, switchColor(color));
 						/*if(value < alpha)
