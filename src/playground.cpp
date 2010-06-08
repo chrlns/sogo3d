@@ -280,11 +280,11 @@ int Playground::rating()
 				
 				if(countBlack == 3 && countEmpty == 1)
 				{
-					rating = rating+2;
+					rating = rating+30;
 				}
 				else if (countWhite == 3 && countEmpty == 1)
 				{
-					rating = rating-2;					
+					rating = rating-30;					
 				}
 				else if(countBlack == 2 && countEmpty == 2)
 				{	
@@ -330,11 +330,11 @@ int Playground::rating()
 				
 				if(countBlack == 3 && countEmpty == 1)
 				{
-					rating = rating+2;
+					rating = rating+30;
 				}
 				else if (countWhite == 3 && countEmpty == 1)
 				{
-					rating = rating-2;					
+					rating = rating-30;					
 				}
 				else if(countBlack == 2 && countEmpty == 2)
 				{	
@@ -359,10 +359,12 @@ int Playground::rating()
 	countWhite=0;
 	countEmpty=0;
 	// diagonals
-	// inner diagonal cross (horizontal bars)
-	for(int z=0;z<=3;z++)
+	// inner diagonal cross (hoizontal bars)
+	int actualColor = 0;
+	//int z=0;
+	for(int z=0; z<=3; z++)
 	{		for(int xy = 0; xy < 4; xy++)
-			
+		{
 			actualColor = get(xy,xy,z);
 			if( actualColor!=EMPTY) 
 			{
@@ -383,11 +385,11 @@ int Playground::rating()
 		}
 		if(countBlack == 3 && countEmpty == 1)
 		{
-			rating = rating+2;
+			rating = rating+30;
 		}
 		else if (countWhite == 3 && countEmpty == 1)
 		{
-			rating = rating-2;					
+			rating = rating-30;					
 		}
 		else if(countBlack == 2 && countEmpty == 2)
 		{	
@@ -403,7 +405,7 @@ int Playground::rating()
 		countEmpty=0;
 
 		for(int x = 0, y=3; x < 4; x++,y--)
-			
+		{
 			actualColor = get(x,y,z);
 			if( actualColor!=EMPTY) 
 			{
@@ -422,13 +424,14 @@ int Playground::rating()
 			}
 			
 		}
+
 		if(countBlack == 3 && countEmpty == 1)
 		{
-			rating = rating+2;
+			rating = rating+30;
 		}
 		else if (countWhite == 3 && countEmpty == 1)
 		{
-			rating = rating-2;					
+			rating = rating-30;					
 		}
 		else if(countBlack == 2 && countEmpty == 2)
 		{	
@@ -438,7 +441,7 @@ int Playground::rating()
 		{
 			rating--;
 		}
-	}    
+	}
 	return rating;
 	// #############################################################
 	// wenn mehrere 3er lines gefunden, prüfen ob die fehlende kugel bei bei den beiden lines die selbe ist (ob beide offenen lines sich mit der selben kugel "schliessen lassen"
