@@ -230,9 +230,12 @@ int Playground::rating()
 					threefoldWhite++;
 				}
 				// entsprechend bewerten
+				dbgmsg("3er gefunden vertical");
 			}
 		}
 	}
+	rating += threefoldBlack;
+	rating -= threefoldWhite;
 
 	// threefold on horizontal lines direction: [x] ------------------------------------------------------------
 	for(int y = 0; y < 4; y++)
@@ -260,11 +263,11 @@ int Playground::rating()
 					countWhite++;
 				}
 				
-				if(countBlack == 3)
+				if(countBlack == 3 && countEmpty == 1)
 				{
 					rating++;
 				}
-				else if (countWhite == 3)
+				else if (countWhite == 3 && countEmpty == 1)
 				{
 					rating--;
 				}
@@ -316,14 +319,12 @@ int Playground::rating()
 			countEmpty=0;
 		}
 	}
-
-	// wenn 3er line gefunden, checkn ob schwarz oder weiss
-
-	// entsprechend (ob schwarz oder weiss) bewertung vornehmen
 	
+
 	rating += threefoldBlack;
 	rating -= threefoldWhite;
-	
+
+
 	return rating;
 	// #############################################################
 	// wenn mehrere 3er lines gefunden, prüfen ob die fehlende kugel bei bei den beiden lines die selbe ist (ob beide offenen lines sich mit der selben kugel "schliessen lassen"
