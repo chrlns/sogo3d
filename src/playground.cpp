@@ -355,76 +355,90 @@ int Playground::rating()
 	rating += threefoldBlack;
 	rating -= threefoldWhite;
 
-
+	countBlack=0;
+	countWhite=0;
+	countEmpty=0;
 	// diagonals
-/*
-	// horizontal lines direction: [y]
-	for(int x=0; x < 4; x++)
-	{
-		for(int z=0; z < 4; z++)
-		{       
-			for(int y=0; y < 4;z++)
+	// inner diagonal cross (horizontal bars)
+	for(int z=0;z<=3;z++)
+	{		for(int xy = 0; xy < 4; xy++)
+			
+			actualColor = get(xy,xy,z);
+			if( actualColor!=EMPTY) 
 			{
-				int actualColor = get(x, y, z);
-				if( actualColor == EMPTY )
-				{ 	
-					countEmpty++;
-					if(countEmpty > 2)
-					{
-						break;
-					}
-				}
-				else if(actualColor == BLACK)
-				{ 
+				if(actualColor==BLACK)
+				{
 					countBlack++;
 				}
 				else
-				{ 
+				{
 					countWhite++;
 				}
-				
-				if(countBlack == 3 && countEmpty == 1)
-				{
-					rating = rating+2;
-				}
-				else if (countWhite == 3 && countEmpty == 1)
-				{
-					rating = rating-2;					
-				}
-				else if(countBlack == 2 && countEmpty == 2)
-				{	
-					rating++;
-				}	
-				else if(countWhite == 2 && countEmpty == 2)
-				{
-					rating--;
-				}
 			}
-			countBlack=0;
-			countWhite=0;
-			countEmpty=0;
-		}
+			else
+			{	
+				countEmpty++;
 			}
-			if( (get(x, 0, z)!=EMPTY) && (get(x, 0, z)==get(x, 1, z)) && (get(x, 1, z)==get(x, 2, z)) && (get(x, 2, z)==get(x, 3, z)) )
+			
 		}
-	}
-
-	// diagonal bars (low to high)
-	// direction: [x]
-	for(int y=0;y<=3;y++)
-	{
-		if( (get(0,y,0)!=EMPTY) && (get(0,y,0)==get(1,y,1)) && (get(1,y,1)==get(2,y,2)) && (get(2,y,2)==get(3,y,3)) )
-		{ 
-			ratingVal++;
-		}
-
-		if( (get(3,y,0)!=EMPTY) && (get(3,y,0)==get(2,y,1)) && (get(2,y,1)==get(1,y,2)) && (get(1,y,2)==get(0,y,3)) )
+		if(countBlack == 3 && countEmpty == 1)
 		{
-			ratingVal++;
+			rating = rating+2;
 		}
-	}
-*/
+		else if (countWhite == 3 && countEmpty == 1)
+		{
+			rating = rating-2;					
+		}
+		else if(countBlack == 2 && countEmpty == 2)
+		{	
+			rating++;
+		}	
+		else if(countWhite == 2 && countEmpty == 2)
+		{
+			rating--;
+		}
 
+		countBlack=0;
+		countWhite=0;
+		countEmpty=0;
+
+		for(int x = 0, y=3; x < 4; x++,y--)
+			
+			actualColor = get(x,y,z);
+			if( actualColor!=EMPTY) 
+			{
+				if(actualColor==BLACK)
+				{
+					countBlack++;
+				}
+				else
+				{
+					countWhite++;
+				}
+			}
+			else
+			{	
+				countEmpty++;
+			}
+			
+		}
+		if(countBlack == 3 && countEmpty == 1)
+		{
+			rating = rating+2;
+		}
+		else if (countWhite == 3 && countEmpty == 1)
+		{
+			rating = rating-2;					
+		}
+		else if(countBlack == 2 && countEmpty == 2)
+		{	
+			rating++;
+		}	
+		else if(countWhite == 2 && countEmpty == 2)
+		{
+			rating--;
+		}
+	}    
 	return rating;
 	// #############################################################
 	// wenn mehrere 3er lines gefunden, prüfen ob die fehlende kugel bei bei den beiden lines die selbe ist (ob beide offenen lines sich mit der selben kugel "schliessen lassen"
