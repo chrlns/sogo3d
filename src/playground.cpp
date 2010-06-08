@@ -195,15 +195,13 @@ int Playground::rating()
 	// auf siegbrett prüfen
 	// testen ob weiss oder schwarz gewonnen hat & entsprechend bewerten
 
-	if(isGameOver() == WHITE)
+	if(isGameOver() == BLACK)
 	{
-		//rating -= 500;
-		return -MAX_RATING;
+		rating += MAX_RATING;
 	} 
-	else if(isGameOver() == BLACK)
+	else if(isGameOver() == WHITE)
 	{
-		//rating += 500;
-		return MAX_RATING;
+		rating += -MAX_RATING;
 	}
 	
 
@@ -216,19 +214,36 @@ int Playground::rating()
 	{
 		for(int y = 0 ; y < 4; y++)
 		{                   
-			if((get(x, y, 0)!=EMPTY) 
-			&& (get(x, y, 0)==get(x, y, 1)) && (get(x, y, 1)==get(x, y, 2))
-			&& (get(x, y, 3)==EMPTY) )
+			if((get(x, y, 0)!=EMPTY ) 
+			&& ( get(x, y, 0)==get(x, y, 1)) 
+			&& ( get(x, y, 3)==EMPTY ))
 			{
-				// testen ob schwarz oder weiss
-				if((get(x, y, 0)==BLACK))
+
+				if( (get(x, y, 1) == get(x, y, 2)) )
 				{
-					threefoldBlack++;
+					if((get(x, y, 0)==BLACK))
+					{
+						threefoldBlack += 2;
+					}
+					else
+					{	
+						threefoldWhite += 2;
+					}
 				}
-				else
-				{	
-					threefoldWhite++;
+				else 
+				{
+					if((get(x, y, 0)==BLACK))
+					{
+						threefoldBlack++;
+					}
+					else
+					{	
+						threefoldWhite++;
+					}
 				}
+
+				// testen ob schwarz oder weiss
+
 				// entsprechend bewerten
 
 			}
@@ -249,7 +264,7 @@ int Playground::rating()
 				if( actualColor == EMPTY )
 				{ 	
 					countEmpty++;
-					if(countEmpty > 1)
+					if(countEmpty > 2)
 					{
 						break;
 					}
@@ -299,7 +314,7 @@ int Playground::rating()
 				if( actualColor == EMPTY )
 				{ 	
 					countEmpty++;
-					if(countEmpty > 1)
+					if(countEmpty > 2)
 					{
 						break;
 					}
@@ -340,6 +355,75 @@ int Playground::rating()
 	rating += threefoldBlack;
 	rating -= threefoldWhite;
 
+
+	// diagonals
+/*
+	// horizontal lines direction: [y]
+	for(int x=0; x < 4; x++)
+	{
+		for(int z=0; z < 4; z++)
+		{       
+			for(int y=0; y < 4;z++)
+			{
+				int actualColor = get(x, y, z);
+				if( actualColor == EMPTY )
+				{ 	
+					countEmpty++;
+					if(countEmpty > 2)
+					{
+						break;
+					}
+				}
+				else if(actualColor == BLACK)
+				{ 
+					countBlack++;
+				}
+				else
+				{ 
+					countWhite++;
+				}
+				
+				if(countBlack == 3 && countEmpty == 1)
+				{
+					rating = rating+2;
+				}
+				else if (countWhite == 3 && countEmpty == 1)
+				{
+					rating = rating-2;					
+				}
+				else if(countBlack == 2 && countEmpty == 2)
+				{	
+					rating++;
+				}	
+				else if(countWhite == 2 && countEmpty == 2)
+				{
+					rating--;
+				}
+			}
+			countBlack=0;
+			countWhite=0;
+			countEmpty=0;
+		}
+			}
+			if( (get(x, 0, z)!=EMPTY) && (get(x, 0, z)==get(x, 1, z)) && (get(x, 1, z)==get(x, 2, z)) && (get(x, 2, z)==get(x, 3, z)) )
+		}
+	}
+
+	// diagonal bars (low to high)
+	// direction: [x]
+	for(int y=0;y<=3;y++)
+	{
+		if( (get(0,y,0)!=EMPTY) && (get(0,y,0)==get(1,y,1)) && (get(1,y,1)==get(2,y,2)) && (get(2,y,2)==get(3,y,3)) )
+		{ 
+			ratingVal++;
+		}
+
+		if( (get(3,y,0)!=EMPTY) && (get(3,y,0)==get(2,y,1)) && (get(2,y,1)==get(1,y,2)) && (get(1,y,2)==get(0,y,3)) )
+		{
+			ratingVal++;
+		}
+	}
+*/
 
 	return rating;
 	// #############################################################
