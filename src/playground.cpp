@@ -2,6 +2,8 @@
 #include "types.h"
 #include <cstdlib>
 #include <cstring>
+#include <stdio.h>
+
 #include <map>
 
 //std::map<uint64_t, std::map<uint64_t, int16_t>> ratings;
@@ -258,11 +260,11 @@ int Playground::rating()
 					countWhite++;
 				}
 				
-				if(countBlack>countWhite)
+				if(countBlack == 3)
 				{
 					rating++;
 				}
-				else
+				else if (countWhite == 3)
 				{
 					rating--;
 				}
@@ -300,11 +302,11 @@ int Playground::rating()
 					countWhite++;
 				}
 				
-				if(countBlack>countWhite)
+				if(countBlack == 3 && countEmpty == 1)
 				{
 					rating++;
 				}
-				else
+				else if (countWhite == 3 && countEmpty == 1)
 				{
 					rating--;
 				}
@@ -321,7 +323,7 @@ int Playground::rating()
 	
 	rating += threefoldBlack;
 	rating -= threefoldWhite;
-
+	
 	return rating;
 	// #############################################################
 	// wenn mehrere 3er lines gefunden, prüfen ob die fehlende kugel bei bei den beiden lines die selbe ist (ob beide offenen lines sich mit der selben kugel "schliessen lassen"
