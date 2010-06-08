@@ -5,6 +5,8 @@
 #include <GL/glut.h>
 #include <iostream>
 #include <string>
+#include <stdio.h>
+#include <stdlib.h>
 
 Playground* currentPlayground = NULL;
 bool enableZBuffer = true;
