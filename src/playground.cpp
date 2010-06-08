@@ -228,9 +228,12 @@ int Playground::rating()
 					threefoldWhite++;
 				}
 				// entsprechend bewerten
+				dbgmsg("3er gefunden vertical");
 			}
 		}
 	}
+	rating += threefoldBlack;
+	rating -= threefoldWhite;
 
 	// threefold on horizontal lines direction: [x] ------------------------------------------------------------
 	for(int y = 0; y < 4; y++)
@@ -258,11 +261,11 @@ int Playground::rating()
 					countWhite++;
 				}
 				
-				if(countBlack>countWhite)
+				if(countBlack==3)
 				{
 					rating++;
 				}
-				else
+				else if(countWhite==3)
 				{
 					rating--;
 				}
@@ -300,11 +303,11 @@ int Playground::rating()
 					countWhite++;
 				}
 				
-				if(countBlack>countWhite)
+				if(countBlack==3)
 				{
 					rating++;
 				}
-				else
+				else if(countWhite==3)
 				{
 					rating--;
 				}
@@ -314,13 +317,10 @@ int Playground::rating()
 			countEmpty=0;
 		}
 	}
-
-	// wenn 3er line gefunden, checkn ob schwarz oder weiss
-
-	// entsprechend (ob schwarz oder weiss) bewertung vornehmen
 	
-	rating += threefoldBlack;
-	rating -= threefoldWhite;
+	// check diagonal lines
+	
+	
 
 	return rating;
 	// #############################################################
