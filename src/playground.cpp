@@ -349,7 +349,7 @@ int Playground::rating()
 	int countBlack = 0;
 	int countWhite = 0;
 	int countEmpty = 0;
-	int count = 0;
+
 	// #############################################################
 	// auf siegbrett prüfen
 	// testen ob weiss oder schwarz gewonnen hat & entsprechend bewerten
