@@ -16,7 +16,9 @@ int min(Playground* root, int horizon, int alpha, int beta, int color/*, int* ox
 // beta: obere Grenze
 int max(Playground* root, int horizon, int alpha, int beta, int color/*, int* ox, int* oy*/)
 {
+#ifdef DEBUG
 	children++;
+#endif
 	if(horizon <= 0 || root->isGameOver() != 0) 
 	{
 		return root->rating();
@@ -50,7 +52,9 @@ int max(Playground* root, int horizon, int alpha, int beta, int color/*, int* ox
 // beta: obere Grenze
 int min(Playground* root, int horizon, int alpha, int beta, int color/*, int* ox, int* oy*/)
 {
+#ifdef DEBUG
 	children++;
+#endif
 	if(horizon <= 0 || root->isGameOver() != 0) 
 	{
 		return root->rating();
@@ -101,7 +105,9 @@ void* enterThread(void* args)
  */
 int minimax(Playground* root, int color, int argHorizon)
 {
+#ifdef DEBUG
 	children = 0;
+#endif
 	int optX 	= -1;
 	int optY 	= -1;
 	int minmax	= color == BLACK ? -(100000) : (100000); // Mit den jeweiligen Worstcase-Werten initialisieren
@@ -117,7 +123,6 @@ int minimax(Playground* root, int color, int argHorizon)
 			int n = x * 4 + y;
 			if(pg->move(x, y))
 			{
-				//int v = negamax(pg, horizon, -MAX_RATING, MAX_RATING, switchColor(color));
 				thread_args_t* args = new thread_args();
 				args->playground	= pg;
 				args->horizon		= argHorizon;
@@ -133,7 +138,8 @@ int minimax(Playground* root, int color, int argHorizon)
 			{
 				sysThreadHandle[n] = 0;
 			}
-			//delete pg;
+			// delete pg; // Hier nicht möglich, da pg noch innerhalb des Threads
+			// verwendet wird. Thread löscht Instanz selbst.
 		}
 	}
 
