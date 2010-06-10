@@ -303,6 +303,7 @@ int Playground::rating()
 	countBlack=0;
 	countWhite=0;
 	countEmpty=0;
+
 	// threefold on horizontal lines direction: [y]
 	for(int x = 0; x <4 ; x++)
 	{
@@ -355,6 +356,184 @@ int Playground::rating()
 	rating += threefoldBlack;
 	rating -= threefoldWhite;
 
+
+
+
+
+
+	// diagonal bars (low to high)
+	// direction: [x]
+	
+	for(int y = 0; y < 4 ; y++)
+	{		for(int x = 0, z = 0; x < 4; x++, z=x)
+		{
+			int actualColor = get(x, y, z);
+			if( actualColor == EMPTY )
+			{ 	
+				countEmpty++;
+				if(countEmpty > 2)
+				{
+					break;
+				}
+			}
+			else if(actualColor == BLACK)
+			{ 
+				countBlack++;
+			}
+			else
+			{ 
+				countWhite++;
+			}
+			
+			if(countBlack == 3 && countEmpty == 1)
+			{
+				rating = rating+30;
+			}
+			else if (countWhite == 3 && countEmpty == 1)
+			{
+				rating = rating-30;					
+			}
+			else if(countBlack == 2 && countEmpty == 2)
+			{	
+				rating++;
+			}	
+			else if(countWhite == 2 && countEmpty == 2)
+			{
+				rating--;
+			}
+		}
+		countBlack=0;
+		countWhite=0;
+		countEmpty=0;
+
+		for(int x = 0, z = 3; x < 4; x++, z=3-x)
+		{
+			int actualColor = get(x, y, z);
+			if( actualColor == EMPTY )
+			{ 	
+				countEmpty++;
+				if(countEmpty > 2)
+				{
+					break;
+				}
+			}
+			else if(actualColor == BLACK)
+			{ 
+				countBlack++;
+			}
+			else
+			{ 
+				countWhite++;
+			}
+			
+			if(countBlack == 3 && countEmpty == 1)
+			{
+				rating = rating+30;
+			}
+			else if (countWhite == 3 && countEmpty == 1)
+			{
+				rating = rating-30;					
+			}
+			else if(countBlack == 2 && countEmpty == 2)
+			{	
+				rating++;
+			}	
+			else if(countWhite == 2 && countEmpty == 2)
+			{
+				rating--;
+			}
+		}
+		countBlack=0;
+		countWhite=0;
+		countEmpty=0;		
+	}
+
+	// diagonal bars (low to high)
+	// direction: [x]
+	
+	for(int x = 0; x < 4 ; x++)
+	{		for(int y = 0, z = 0; y < 4; y++, z=x)
+		{
+			int actualColor = get(x, y, z);
+			if( actualColor == EMPTY )
+			{ 	
+				countEmpty++;
+				if(countEmpty > 2)
+				{
+					break;
+				}
+			}
+			else if(actualColor == BLACK)
+			{ 
+				countBlack++;
+			}
+			else
+			{ 
+				countWhite++;
+			}
+			
+			if(countBlack == 3 && countEmpty == 1)
+			{
+				rating = rating+30;
+			}
+			else if (countWhite == 3 && countEmpty == 1)
+			{
+				rating = rating-30;					
+			}
+			else if(countBlack == 2 && countEmpty == 2)
+			{	
+				rating++;
+			}	
+			else if(countWhite == 2 && countEmpty == 2)
+			{
+				rating--;
+			}
+		}
+		countBlack=0;
+		countWhite=0;
+		countEmpty=0;
+		for(int y = 0, z = 3; y < 4; y++, z=3-y)
+		{
+			int actualColor = get(x, y, z);
+			if( actualColor == EMPTY )
+			{ 	
+				countEmpty++;
+				if(countEmpty > 2)
+				{
+					break;
+				}
+			}
+			else if(actualColor == BLACK)
+			{ 
+				countBlack++;
+			}
+			else
+			{ 
+				countWhite++;
+			}
+			
+			if(countBlack == 3 && countEmpty == 1)
+			{
+				rating = rating+30;
+			}
+			else if (countWhite == 3 && countEmpty == 1)
+			{
+				rating = rating-30;					
+			}
+			else if(countBlack == 2 && countEmpty == 2)
+			{	
+				rating++;
+			}	
+			else if(countWhite == 2 && countEmpty == 2)
+			{
+				rating--;
+			}
+		}
+		countBlack=0;
+		countWhite=0;
+		countEmpty=0;		
+	}
+
 	countBlack=0;
 	countWhite=0;
 	countEmpty=0;
@@ -404,7 +583,7 @@ int Playground::rating()
 		countWhite=0;
 		countEmpty=0;
 
-		for(int x = 0, y=3; x < 4; x++,y--)
+		for(int x = 0, y = 3; x < 4; x++,y--)
 		{
 			actualColor = get(x,y,z);
 			if( actualColor!=EMPTY) 
