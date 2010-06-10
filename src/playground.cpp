@@ -362,10 +362,12 @@ int Playground::rating()
 	if(isGameOver() == BLACK)
 	{
 		rating += MAX_RATING;
+		//return rating;
 	} 
 	else if(isGameOver() == WHITE)
 	{
 		rating += -MAX_RATING;
+		//return rating;
 	}
 	
 

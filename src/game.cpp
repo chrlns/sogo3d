@@ -3,20 +3,22 @@
 #include <pthread.h>
 #include <assert.h>
 
+extern int horizon;
+
 int threadResults[16];
 pthread_t       sysThreadHandle[16];
 pthread_attr_t  sysThreadAttrib[16];
 uint64_t		children = 0;
 
-int minn(Playground* root, int horizon, int alpha, int beta, int color/*, int* ox, int* oy*/);
+int min(Playground* root, int horizon, int alpha, int beta, int color/*, int* ox, int* oy*/);
 
 // alpha: untere Grenze
 // beta: obere Grenze
 // Methodname ist falsch, nicht wirklich Negamax
-int maxx(Playground* root, int horizon, int alpha, int beta, int color/*, int* ox, int* oy*/)
+int max(Playground* root, int horizon, int alpha, int beta, int color/*, int* ox, int* oy*/)
 {
 	children++;
-	if(horizon <= 0) // || root->isGameOver() != 0) 
+	if(horizon <= 0 || root->isGameOver() != 0) 
 	{
 		return root->rating();
 	} 
@@ -35,14 +37,14 @@ int maxx(Playground* root, int horizon, int alpha, int beta, int color/*, int* o
 
 						//dbgmsg("Bewertung " << pg->rating());
 						// Wir suchen das Maximum
-						value = minn(pg, horizon - 1, alpha, rating, switchColor(color));
-						if(value < alpha)
+						value = min(pg, horizon - 1, alpha, rating, switchColor(color));
+						/*if(value < alpha)
 						{
 							//dbgmsg("Gekürzt Maximum!");
 							delete pg;
 							return value;
-						}
-						rating = max(rating, value);
+						}*/
+						rating = MAX(rating, value);
 
 					
 				}
@@ -56,10 +58,10 @@ int maxx(Playground* root, int horizon, int alpha, int beta, int color/*, int* o
 // alpha: untere Grenze
 // beta: obere Grenze
 // Methodname ist falsch, nicht wirklich Negamax
-int minn(Playground* root, int horizon, int alpha, int beta, int color/*, int* ox, int* oy*/)
+int min(Playground* root, int horizon, int alpha, int beta, int color/*, int* ox, int* oy*/)
 {
 	children++;
-	if(horizon <= 0) // || root->isGameOver() != 0) 
+	if(horizon <= 0 || root->isGameOver() != 0) 
 	{
 		return root->rating();
 	} 
@@ -76,14 +78,14 @@ int minn(Playground* root, int horizon, int alpha, int beta, int color/*, int* o
 				{
 					int value;
 						// Wir suchen das Minimum
-						value = maxx(pg, horizon - 1, rating, beta, switchColor(color));
-						if(value > beta)
+						value = min(pg, horizon - 1, rating, beta, switchColor(color));
+						/*if(value > beta)
 						{
 							//dbgmsg("Gekürzt Minimum!");
 							delete pg;
 							return value;
-						}
-						rating = min(rating, value);
+						}*/
+						rating = MIN(rating, value);
 
 				}
 				delete pg;
@@ -97,9 +99,9 @@ void* enterThread(void* args)
 {
 	thread_args* targs = (thread_args*)args;
 	if(targs->color == BLACK)
-		threadResults[targs->number] = maxx(targs->playground, targs->horizon, targs->alpha, targs->beta, targs->color);
+		threadResults[targs->number] = max(targs->playground, targs->horizon, targs->alpha, targs->beta, targs->color);
 	else
-		threadResults[targs->number] = minn(targs->playground, targs->horizon, targs->alpha, targs->beta, targs->color);
+		threadResults[targs->number] = min(targs->playground, targs->horizon, targs->alpha, targs->beta, targs->color);
 	delete targs->playground;
 	delete targs;
 	return NULL;
@@ -111,12 +113,13 @@ void* enterThread(void* args)
  * color: die Farbe, die am Zug ist
  * horizon: wieviel Ebenen sollen im Baum untersucht werden.
  */
-int minimax(Playground* root, int color, int horizon)
+int minimax(Playground* root, int color, int argHorizon)
 {
 	children = 0;
 	int optX 	= -1;
 	int optY 	= -1;
 	int minmax	= color == BLACK ? -(100000) : (100000); // Mit den jeweiligen Worstcase-Werten initialisieren
+	long starttime = time(NULL);
 
 	// Wir führen den ersten Schritt manuell aus, da wir wissen wollen, in
 	// welche Richtung wir weiterlaufen sollen.
@@ -131,7 +134,7 @@ int minimax(Playground* root, int color, int horizon)
 				//int v = negamax(pg, horizon, -MAX_RATING, MAX_RATING, switchColor(color));
 				thread_args_t* args = new thread_args();
 				args->playground	= pg;
-				args->horizon		= horizon;
+				args->horizon		= argHorizon;
 				args->alpha			= -100000;
 				args->beta			= 100000;
 				args->color			= switchColor(color);
@@ -170,6 +173,22 @@ int minimax(Playground* root, int color, int horizon)
 		}
 	}
 
+	long calcTime = time(NULL) - starttime;
+
+	// Anhand der Berechnungszeit den Horizont erhöhen und reduzieren
+	std::cout << "Zugberechnung dauerte " << calcTime << " sec" << std::endl;
+	if(calcTime < 30)
+	{
+		horizon++;
+		std::cout << "Berechnungshorizont erhöht auf " << horizon << std::endl;
+	}
+	else if(calcTime > 300 && horizon > 4)
+	{
+		horizon--;
+		std::cout << "Berechungshorizont reduziert auf " << horizon << std::endl;
+	}
+
+	// Ein paar Debugausgaben
 	dbgmsg("Minimax: " << minmax);
 	dbgmsg("Idealer Zug: " << optX << " " << optY);
 	dbgmsg("Kinder: " << children);
@@ -182,5 +201,6 @@ int minimax(Playground* root, int color, int horizon)
 	{
 		dbgmsg("Am Zug ist " << root->turnColor);
 	}
+
 	return 0;
 }

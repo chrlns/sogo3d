@@ -11,10 +11,10 @@
 #define switchColor(color) \
 	color == BLACK ? WHITE : BLACK
 
-#define max(a, b) \
+#define MAX(a, b) \
 	a >= b ? a : b
 	
-#define min(a, b) \
+#define MIN(a, b) \
 	a <= b ? a : b
 	
 #ifndef DEBUG
