@@ -8,10 +8,12 @@ pthread_t       sysThreadHandle[16];
 pthread_attr_t  sysThreadAttrib[16];
 uint64_t		children = 0;
 
+int minn(Playground* root, int horizon, int alpha, int beta, int color/*, int* ox, int* oy*/);
+
 // alpha: untere Grenze
 // beta: obere Grenze
 // Methodname ist falsch, nicht wirklich Negamax
-int negamax(Playground* root, int horizon, int alpha, int beta, int color/*, int* ox, int* oy*/)
+int maxx(Playground* root, int horizon, int alpha, int beta, int color/*, int* ox, int* oy*/)
 {
 	children++;
 	if(horizon <= 0) // || root->isGameOver() != 0) 
@@ -30,37 +32,59 @@ int negamax(Playground* root, int horizon, int alpha, int beta, int color/*, int
 				if(pg->move(x, y))
 				{
 					int value;
-					if(color == BLACK)
-					{
+
 						//dbgmsg("Bewertung " << pg->rating());
 						// Wir suchen das Maximum
-						value = negamax(pg, horizon - 1, alpha, rating, switchColor(color));
-						/*if(value < alpha)
+						value = minn(pg, horizon - 1, alpha, rating, switchColor(color));
+						if(value < alpha)
 						{
 							//dbgmsg("Gekürzt Maximum!");
 							delete pg;
 							return value;
-						}*/
+						}
 						rating = max(rating, value);
-					}
-					else if(color == WHITE)
-					{
+
+					
+				}
+				delete pg;
+			}
+		}
+		return rating;
+	}
+}
+
+// alpha: untere Grenze
+// beta: obere Grenze
+// Methodname ist falsch, nicht wirklich Negamax
+int minn(Playground* root, int horizon, int alpha, int beta, int color/*, int* ox, int* oy*/)
+{
+	children++;
+	if(horizon <= 0) // || root->isGameOver() != 0) 
+	{
+		return root->rating();
+	} 
+	else 
+	{
+		int rating = root->rating();
+		// Für jeden möglichen Zug muss ein Unterbaum erzeugt werden
+		for(int x = 0; x < 4; x++)
+		{
+			for(int y = 0; y < 4; y++)
+			{
+				Playground* pg = root->clone();
+				if(pg->move(x, y))
+				{
+					int value;
 						// Wir suchen das Minimum
-						value = negamax(pg, horizon - 1, rating, beta, switchColor(color));
-						/*if(value > beta)
+						value = maxx(pg, horizon - 1, rating, beta, switchColor(color));
+						if(value > beta)
 						{
 							//dbgmsg("Gekürzt Minimum!");
 							delete pg;
 							return value;
-						}*/
+						}
 						rating = min(rating, value);
-					}
-					//int optX = x;
-					//int optY = y;
-					// Das neue Spielfeld ist gültig und sollte weiter untersucht
-					//alpha = max(alpha, -negamax(pg, horizon - 1, -beta, -alpha, switchColor(color)/*, &optX, &optY*/));
-					//if(alpha >= beta)
-					//	return beta;
+
 				}
 				delete pg;
 			}
@@ -72,7 +96,10 @@ int negamax(Playground* root, int horizon, int alpha, int beta, int color/*, int
 void* enterThread(void* args)
 {
 	thread_args* targs = (thread_args*)args;
-	threadResults[targs->number] = negamax(targs->playground, targs->horizon, targs->alpha, targs->beta, targs->color);
+	if(targs->color == BLACK)
+		threadResults[targs->number] = maxx(targs->playground, targs->horizon, targs->alpha, targs->beta, targs->color);
+	else
+		threadResults[targs->number] = minn(targs->playground, targs->horizon, targs->alpha, targs->beta, targs->color);
 	delete targs->playground;
 	delete targs;
 	return NULL;
