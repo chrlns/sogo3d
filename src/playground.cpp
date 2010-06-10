@@ -47,7 +47,7 @@ int Playground::isGameOver()
 		}
 	}
 
-	// horizontal lines direction: [x] ------------------------------------------------------------
+	// horizontal lines direction: [x]
 	for(int y = 0; y < 4; y++)
 	{
 		for(int z = 0; z < 4; z++)
@@ -63,7 +63,7 @@ int Playground::isGameOver()
 	}
 
 	// horizontal lines direction: [y]
-	for(int x = 0; x <4 ; x++)
+	for(int x = 0; x < 4 ; x++)
 	{
 		for(int z = 0; z < 4; z++)
 		{                   
@@ -76,7 +76,7 @@ int Playground::isGameOver()
 		}
 	}
 
-	// diagonal bars (low to high) ------------------------------------------------------------------------
+	// diagonal bars (low to high) 
 	// direction: [x]
 	for(int y = 0; y < 4; y++)
 	{
@@ -110,7 +110,7 @@ int Playground::isGameOver()
 	}
 
 
-	// inner diagonal cross (low to high) --------------------------------------------------------------
+	// inner diagonal cross (low to high)
 	if( (get(0,0,0)!=EMPTY) && (get(0,0,0)==get(1,1,1)) &&(get(1,1,1)==get(2,2,2)) && (get(2,2,2)==get(3,3,3)) )
 	{ 
 		this->winnerCache = get(0,0,0); // eigentlich besser erst auf 3,3,3 zu testen da unwahrscheinlicher
@@ -134,7 +134,7 @@ int Playground::isGameOver()
 		return this->winnerCache;
 	}
 	// inner diagonal cross (horizontal bars)
-	for(int z = 0; z <= 3; z++)
+	for(int z = 0; z < 4; z++)
 	{
 	    if( (get(3,3,z)!=EMPTY) && (get(3,3,z)==get(2,2,z)) && (get(2,2,z)==get(1,1,z)) && (get(1,1,z)==get(0,0,z)) )
 	    {
@@ -143,7 +143,7 @@ int Playground::isGameOver()
 	    }    
 	}    
 
-	for(int z = 0; z <= 3; z++)
+	for(int z = 0; z < 4; z++)
 	{
 	    if( (get(0,3,z)!=EMPTY) && (get(0,3,z)==get(1,2,z)) && (get(1,2,z)==get(2,1,z)) && (get(2,1,z)==get(3,0,z)) )
 	    {
@@ -156,7 +156,8 @@ int Playground::isGameOver()
 }
 
 
-void Playground::markWinLine() {
+void Playground::markWinLine() 
+{
 
 	// Vertical staves
 	for(int x = 0; x < 4; x++)
@@ -193,7 +194,7 @@ void Playground::markWinLine() {
 	}
 
 	// horizontal lines direction: [y]
-	for(int x = 0; x <4 ; x++)
+	for(int x = 0; x < 4 ; x++)
 	{
 		for(int z = 0; z < 4; z++)
 		{                   
@@ -220,7 +221,6 @@ void Playground::markWinLine() {
 			set(3,y,3, WINLINE);
 			return;
 		}
-
 		if( (get(3,y,0)!=EMPTY) && (get(3,y,0)==get(2,y,1)) && (get(2,y,1)==get(1,y,2)) && (get(1,y,2)==get(0,y,3)) )
 		{
 			set(0,y,3, WINLINE);
@@ -253,7 +253,6 @@ void Playground::markWinLine() {
 		}
 	}
 
-
 	// inner diagonal cross (low to high) --------------------------------------------------------------
 	if( (get(0,0,0)!=EMPTY) && (get(0,0,0)==get(1,1,1)) &&(get(1,1,1)==get(2,2,2)) && (get(2,2,2)==get(3,3,3)) )
 	{ 
@@ -271,8 +270,6 @@ void Playground::markWinLine() {
 		set(0,0,3, WINLINE);
 		return;
 	}
-	    
-	    
 	if( (get(3,0,0)!=EMPTY) && (get(3,0,0)==get(2,1,1)) && (get(2,1,1)==get(1,2,2)) && (get(1,2,2)==get(0,3,3)) )
 	{
 		set(3,0,0, WINLINE);
@@ -290,7 +287,7 @@ void Playground::markWinLine() {
 		return;
 	}
 	// inner diagonal cross (horizontal bars)
-	for(int z = 0; z <= 3; z++)
+	for(int z = 0; z < 4; z++)
 	{
 	    if( (get(3,3,z)!=EMPTY) && (get(3,3,z)==get(2,2,z)) && (get(2,2,z)==get(1,1,z)) && (get(1,1,z)==get(0,0,z)) )
 	    {
@@ -302,7 +299,7 @@ void Playground::markWinLine() {
 	    }    
 	}    
 
-	for(int z = 0; z <= 3; z++)
+	for(int z = 0; z < 4; z++)
 	{
 	    if( (get(0,3,z)!=EMPTY) && (get(0,3,z)==get(1,2,z)) && (get(1,2,z)==get(2,1,z)) && (get(2,1,z)==get(3,0,z)) )
 	    {
@@ -315,8 +312,6 @@ void Playground::markWinLine() {
 	}
 
 	return;
-
-
 }
 
 // Gibt den Wert an der Stelle (x, y, z) zurück. Durch die Bitschiebereien
@@ -423,7 +418,6 @@ int Playground::rating()
 	{
 		for(int z = 0; z < 4; z++)
 		{                   
-
 			for(int x = 0; x < 4; x++)
 			{
 				int actualColor = get(x, y, z);
@@ -518,14 +512,8 @@ int Playground::rating()
 		}
 	}
 	
-
 	rating += threefoldBlack;
 	rating -= threefoldWhite;
-
-
-
-
-
 
 	// diagonal bars (low to high)
 	// direction: [x]
@@ -914,17 +902,6 @@ int Playground::rating()
 
 Playground* Playground::clone()
 {
-	//Playground* clone = new Playground(*this);
-	/*for(int x = 0; x < 4; x++) 
-	{
-		for(int y = 0; y < 4; y++) 
-		{
-			clone->cols[x][y] = this->cols[x][y];
-		}
-	}
-	clone->turnColor = this->turnColor;
-	clone->winnerCache = this->winnerCache;*/
-	//memcpy(clone, this, sizeof(Playground));
 	return new Playground(*this);
 }
 
@@ -946,4 +923,3 @@ void Playground::setTurnColor(int color)
 {
 	this->turnColor = color;
 }
-
