@@ -1,17 +1,18 @@
-CFLAGS=-Wall --pedantic -I./include
+CFLAGS=-Wall --pedantic -pipe -I./include
 LDFLAGS=-lc -lglut -lGLU -lGL -lXmu -lXext -lX11 -lm -lpthread
-RELEASE=-O2
-DEBUG=-g
+# We use -O2 as -O3 is NOT safe with gcc 4.x
+RELEASE=-O2 -march=native -msse4
+DEBUG=-g -DDEBUG
 SOURCE=$(wildcard *.cpp)
 OBJECTS:= $(patsubst %.cpp,%.o,$(SOURCE))
 
 all : $(OBJECTS)
 	g++ $(LDFLAGS) $(OBJECTS) -o sogo
 
-release : override CFLAGS+=-O2
+release : override CFLAGS+=$(RELEASE)
 release : clean all;
 
-debug : override CFLAGS+=-g -DDEBUG
+debug : override CFLAGS+=$(DEBUG) 
 debug : clean all;
 
 asm : override CFLAGS+=-S
