@@ -4,7 +4,7 @@
 #include "types.h"
 #include <stdint.h>
 
-#define MAX_RATING 1000		/* Maximale Bewertungszahl (+|-) */
+#define MAX_RATING 10000		/* Maximale Bewertungszahl (+|-) */
 
 class Playground
 {
