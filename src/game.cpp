@@ -14,7 +14,6 @@ int min(Playground* root, int horizon, int alpha, int beta, int color/*, int* ox
 
 // alpha: untere Grenze
 // beta: obere Grenze
-// Methodname ist falsch, nicht wirklich Negamax
 int max(Playground* root, int horizon, int alpha, int beta, int color/*, int* ox, int* oy*/)
 {
 	children++;
@@ -24,7 +23,7 @@ int max(Playground* root, int horizon, int alpha, int beta, int color/*, int* ox
 	} 
 	else 
 	{
-		int rating = root->rating();
+		//int rating = root->rating();
 		// Für jeden möglichen Zug muss ein Unterbaum erzeugt werden
 		for(int x = 0; x < 4; x++)
 		{
@@ -33,31 +32,22 @@ int max(Playground* root, int horizon, int alpha, int beta, int color/*, int* ox
 				Playground* pg = root->clone();
 				if(pg->move(x, y))
 				{
-					int value;
-
-						//dbgmsg("Bewertung " << pg->rating());
-						// Wir suchen das Maximum
-						value = min(pg, horizon - 1, alpha, rating, switchColor(color));
-						/*if(value < alpha)
-						{
-							//dbgmsg("Gekürzt Maximum!");
-							delete pg;
-							return value;
-						}*/
-						rating = MAX(rating, value);
-
-					
+					int value = min(pg, horizon - 1, alpha, beta, switchColor(color));
+					if(value >= beta)
+             			return beta;
+         			if(value > alpha)
+             			alpha = value;
+					//rating = MAX(rating, value);
 				}
 				delete pg;
 			}
 		}
-		return rating;
+		return alpha;
 	}
 }
 
 // alpha: untere Grenze
 // beta: obere Grenze
-// Methodname ist falsch, nicht wirklich Negamax
 int min(Playground* root, int horizon, int alpha, int beta, int color/*, int* ox, int* oy*/)
 {
 	children++;
@@ -67,7 +57,7 @@ int min(Playground* root, int horizon, int alpha, int beta, int color/*, int* ox
 	} 
 	else 
 	{
-		int rating = root->rating();
+		//int rating = root->rating();
 		// Für jeden möglichen Zug muss ein Unterbaum erzeugt werden
 		for(int x = 0; x < 4; x++)
 		{
@@ -76,22 +66,18 @@ int min(Playground* root, int horizon, int alpha, int beta, int color/*, int* ox
 				Playground* pg = root->clone();
 				if(pg->move(x, y))
 				{
-					int value;
-						// Wir suchen das Minimum
-						value = min(pg, horizon - 1, rating, beta, switchColor(color));
-						/*if(value > beta)
-						{
-							//dbgmsg("Gekürzt Minimum!");
-							delete pg;
-							return value;
-						}*/
-						rating = MIN(rating, value);
+					int value = max(pg, horizon - 1, alpha, beta, switchColor(color));
+					if(value <= alpha)
+						return alpha;
+				 	if(value < beta)
+						beta = value;
+						//rating = MIN(rating, value);
 
 				}
 				delete pg;
 			}
 		}
-		return rating;
+		return beta;
 	}
 }
 
@@ -177,12 +163,12 @@ int minimax(Playground* root, int color, int argHorizon)
 
 	// Anhand der Berechnungszeit den Horizont erhöhen und reduzieren
 	std::cout << "Zugberechnung dauerte " << calcTime << " sec" << std::endl;
-	if(calcTime < 30)
+	if(calcTime < 15)
 	{
 		horizon++;
 		std::cout << "Berechnungshorizont erhöht auf " << horizon << std::endl;
 	}
-	else if(calcTime > 300 && horizon > 4)
+	else if(calcTime > 45 && horizon > 4)
 	{
 		horizon--;
 		std::cout << "Berechungshorizont reduziert auf " << horizon << std::endl;
