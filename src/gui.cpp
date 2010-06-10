@@ -2,7 +2,6 @@
 #include <GL/glut.h>
 #include <GL/gl.h>
 #include <GL/glu.h>
-#include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
 #include "BMPLoader.h"
@@ -29,7 +28,7 @@ GLUquadricObj *quadric;
 // das aktuelle spielfeld wird hier vorläufig erstmal ziemlich ineffizient zwischengespeichert
 int markedStab = -1;
 int count[17];
-int gameField[128];	//stupid but too late and too tired to fix now
+//int gameField[128];	//stupid but too late and too tired to fix now
 int currentColor = 0;
 
 
@@ -109,10 +108,14 @@ glMatrixMode(GL_MODELVIEW);
 
 void drawPlayground(Playground* pg)
 {
-	for(int x = 0; x < 4; x++) {
-		for(int y = 0; y < 4; y++) {
-			for(int z = 0; z < 4; z++) {
-				switch(pg->get(x, y, z)) {
+	for(int x = 0; x < 4; x++) 
+	{
+		for(int y = 0; y < 4; y++) 
+		{
+			for(int z = 0; z < 4; z++) 
+			{
+				switch(pg->get(x, y, z)) 
+				{
 					case BLACK:
 						createBall(x, y, z, 0);
 						break;
@@ -171,7 +174,8 @@ void keyboardFunc(unsigned char key, int mouseX, int mouseY)
 }
 
 
-void displayTargets() {
+void displayTargets() 
+{
 		//stäbe, 16 an der zahl!
 		glEnable(GL_TEXTURE_2D);
 		
@@ -406,15 +410,19 @@ void mouseMotion(int x, int y)		// grösstenteils übernommen von http://nehe.ga
 
 void mouse(int button, int state, int x, int y)
 {
-	if (state != GLUT_DOWN) return;
-	if (markedStab == -1) return;	 
-	if (count[markedStab] == 4) return;
-	if (currentPlayground->isGameOver() != EMPTY) {
-		printf("Sorry, das Spiel ist schon zuende!!!\n");
+	if(state != GLUT_DOWN) 
+		return;
+	if(markedStab == -1) 
+		return;	 
+	if(count[markedStab] == 4) 
+		return;
+	if(currentPlayground->isGameOver() != EMPTY) 
+	{
+		std::cout << "Sorry, das Spiel ist schon zu Ende!" << std::endl;
 		return;
 	}
-	printf("Auf Stab %i sind %i Bälle\n", markedStab, count[markedStab]);
-	gameField[markedStab * 4 + count[markedStab]] = currentColor;
+	//printf("Auf Stab %i sind %i Bälle\n", markedStab, count[markedStab]);
+	//gameField[markedStab * 4 + count[markedStab]] = currentColor;
 	count[markedStab]++;
 	if (currentColor == 0) 
 		currentColor = 1; 
@@ -427,10 +435,11 @@ void mouse(int button, int state, int x, int y)
 	currentPlayground->move(x, y);
 	glutPostRedisplay();
 	minimax(currentPlayground, BLACK, horizon);
-	if (currentPlayground->isGameOver() == BLACK || currentPlayground->isGameOver() == WHITE)  {
+	if(currentPlayground->isGameOver() != EMPTY)
+	{
 		currentPlayground->markWinLine();
 	}
-	printf("Bewertung aktuelles Spielfeld: %i\n", currentPlayground->rating());
+	std::cout << "Bewertung aktuelles Spielfeld: " << currentPlayground->rating() << std::endl;
 	glutPostRedisplay();
 }
 
@@ -453,7 +462,8 @@ void init_gamewindow(int* argc, char **argv)
     quadric=gluNewQuadric(); 
 	gluQuadricNormals(quadric, GLU_SMOOTH);
 	gluQuadricTexture(quadric, GL_TRUE);
-	for (int i=0;i<16;i++) {
+	for(int i = 0; i < 16; i++) 
+	{
 		count[i] = 0;
 	}
 }
