@@ -116,7 +116,7 @@ int minimax(Playground* root, int color, int horizon)
 	children = 0;
 	int optX 	= -1;
 	int optY 	= -1;
-	int minmax	= color == BLACK ? -(MAX_RATING + 1) : (MAX_RATING + 1); // Mit den jeweiligen Worstcase-Werten initialisieren
+	int minmax	= color == BLACK ? -(100000) : (100000); // Mit den jeweiligen Worstcase-Werten initialisieren
 
 	// Wir führen den ersten Schritt manuell aus, da wir wissen wollen, in
 	// welche Richtung wir weiterlaufen sollen.
@@ -132,8 +132,8 @@ int minimax(Playground* root, int color, int horizon)
 				thread_args_t* args = new thread_args();
 				args->playground	= pg;
 				args->horizon		= horizon;
-				args->alpha			= -MAX_RATING;
-				args->beta			= MAX_RATING;
+				args->alpha			= -100000;
+				args->beta			= 100000;
 				args->color			= switchColor(color);
 				args->number		= n;
 
