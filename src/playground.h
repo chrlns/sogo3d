@@ -35,6 +35,8 @@ class Playground
 		bool hasLines3(int color, int* x, int* y);
 
 		int rating();
+
+		void setTurnColor(int color);
 };
 
 #endif

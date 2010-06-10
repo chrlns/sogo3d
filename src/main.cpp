@@ -1,3 +1,4 @@
+#include "game.h"
 #include "gui.h"
 #include "types.h"
 #include "playground.h"
@@ -14,6 +15,12 @@ int horizon = 4;
 
 int main(int argc, char* argv[])
 {
+ 	// Start GUI
+	init_gamewindow(&argc, argv);
+
+	// Create empty playground
+	currentPlayground = new Playground();
+
 	// Parse command line arguments
 	for(int n = 1; n < argc; n++)
 	{
@@ -30,7 +37,8 @@ int main(int argc, char* argv[])
 		}
 		if(arg == "-b" || arg == "--play-black")
 		{
-			
+			currentPlayground->setTurnColor(BLACK);
+			minimax(currentPlayground, BLACK, horizon);
 			continue;
 		}
 		if(arg == "-h" || arg == "--help")
@@ -41,12 +49,6 @@ int main(int argc, char* argv[])
 			std::cout << "-z|--no-zbuffer\tDisables depth buffering" << std::endl;
 		}
 	}
-	
- 	// Start GUI
-	init_gamewindow(&argc, argv);
- 
-	// Create empty playground
-	currentPlayground = new Playground();
 
 	// Start GLUT Event loop. Method returns when the game window is closed.
 	glutMainLoop();

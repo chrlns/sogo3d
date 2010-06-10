@@ -596,3 +596,9 @@ bool Playground::move(int x, int y)
 	}
 	return false;
 }
+
+void Playground::setTurnColor(int color)
+{
+	this->turnColor = color;
+}
+
