@@ -15,9 +15,9 @@ extern int horizon;
 
 int windowWidth;
 int windowHeigth;
-float cameraHeigth = 2;
+float cameraHeigth = 1.8f;
 float camDegree = 0;
-float camDistance = 2;
+float camDistance = 1.8f;
 int currentViewMode = 0;
 GLfloat LightAmbient[]= { 1, 1, 1, 1.0f }; 
 GLfloat LightDiffuse[]= { 1.0f, 1.0f, 1.0f, 1.0f };	
@@ -228,7 +228,7 @@ void displayTargets() {
 void display(void) 
 {
 	glLoadIdentity();
-	gluLookAt(sin(camDegree) *  camDistance, cos(camDegree) * camDistance, cameraHeigth, 0, 0, 0, 0, 0, 1);
+	gluLookAt(sin(camDegree) *  camDistance, cos(camDegree) * camDistance, cameraHeigth, 0, 0, 0.5f, 0, 0, 1);
 	glScalef(0.3, 0.3, 0.3);
 	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -306,25 +306,7 @@ glColor3f(.5f,0.25f,0.0f);
 }
 
 void loadTexture() 
-{
-	/*FILE* file = fopen("bodenplatte.bmp", "r");
-	if (file == NULL) {
-		printf("Kann textur nicht lesen!!!\n");
-		return;
-	}
-	
-	fseek(file, 54, SEEK_SET);
-	void* buffer = malloc(256 * 256 * 3);
-	int s = fread(buffer, 1, 256 * 256 * 3, file);
-	if (s != (256 * 256 * 3))  {
-		printf("zuwenig gelesen!\n");
-		fclose(file);
-		return;
-	}
-	printf("%i bytes gelesen\n", s);
-	
-	fclose(file);*/
-	
+{	
 	BMPClass bmp;
 	BMPLoad("bodenplatte.bmp", bmp);
 	glEnable(GL_TEXTURE_2D);
