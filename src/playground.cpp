@@ -155,6 +155,170 @@ int Playground::isGameOver()
 	return this->winnerCache;
 }
 
+
+void Playground::markWinLine() {
+
+	// Vertical staves
+	for(int x = 0; x < 4; x++)
+	{
+		for(int y = 0 ; y < 4; y++)
+		{                   
+			if((get(x, y, 0)!=EMPTY) 
+			&& (get(x, y, 0)==get(x, y, 1)) && (get(x, y, 1)==get(x, y, 2)) && (get(x, y, 2)==get(x, y, 3)) )
+			{
+				set(x, y, 0, WINLINE);
+				set(x, y, 1, WINLINE);
+				set(x, y, 2, WINLINE);
+				set(x, y, 3, WINLINE);
+				return;
+			}
+		}
+	}
+
+	// horizontal lines direction: [x] ------------------------------------------------------------
+	for(int y = 0; y < 4; y++)
+	{
+		for(int z = 0; z < 4; z++)
+		{                   
+			if((get(0, y, z)!=EMPTY) 
+			&& (get(0, y, z)==get(1, y, z)) && (get(1, y, z)==get(2, y, z)) && (get(2, y, z)==get(3, y, z)) )
+			{
+				set(0, y, z, WINLINE);
+				set(1, y, z, WINLINE);
+				set(2, y, z, WINLINE);
+				set(3, y, z, WINLINE);
+				return;
+			}
+		}
+	}
+
+	// horizontal lines direction: [y]
+	for(int x = 0; x <4 ; x++)
+	{
+		for(int z = 0; z < 4; z++)
+		{                   
+			if( (get(x, 0, z)!=EMPTY) && (get(x, 0, z)==get(x, 1, z)) && (get(x, 1, z)==get(x, 2, z)) && (get(x, 2, z)==get(x, 3, z)) )
+			{
+				set(x, 0, z, WINLINE);
+				set(x, 1, z, WINLINE);
+				set(x, 2, z, WINLINE);
+				set(x, 3, z, WINLINE);
+				return;
+			}
+		}
+	}
+
+	// diagonal bars (low to high) ------------------------------------------------------------------------
+	// direction: [x]
+	for(int y = 0; y < 4; y++)
+	{
+		if( (get(0,y,0)!=EMPTY) && (get(0,y,0)==get(1,y,1)) && (get(1,y,1)==get(2,y,2)) && (get(2,y,2)==get(3,y,3)) )
+		{ 
+			set(0,y,0, WINLINE);
+			set(1,y,1, WINLINE);
+			set(2,y,2, WINLINE);
+			set(3,y,3, WINLINE);
+			return;
+		}
+
+		if( (get(3,y,0)!=EMPTY) && (get(3,y,0)==get(2,y,1)) && (get(2,y,1)==get(1,y,2)) && (get(1,y,2)==get(0,y,3)) )
+		{
+			set(0,y,3, WINLINE);
+			set(1,y,2, WINLINE);
+			set(2,y,1, WINLINE);
+			set(3,y,0, WINLINE);
+			return;
+		}
+	}
+
+	// direction: [y] (low to high)
+	for(int x = 0; x < 4; x++)
+	{
+		if( (get(x,0,0)!=EMPTY) && (get(x,0,0)==get(x,1,1)) && (get(x,1,1)==get(x,2,2)) && (get(x,2,2)==get(x,3,3)) )
+		{ 
+			set(x,0,0, WINLINE);
+			set(x,1,1, WINLINE);
+			set(x,2,2, WINLINE);
+			set(x,3,3, WINLINE);
+			return;
+		}
+
+		if( (get(x,3,0)!=EMPTY) && (get(x,3,0)==get(x,2,1)) && (get(x,2,1)==get(x,1,2)) && (get(x,1,2)==get(x,0,3)) )
+		{
+			set(x,3,0, WINLINE);
+			set(x,2,1, WINLINE);
+			set(x,1,2, WINLINE);
+			set(x,0,3, WINLINE);
+			return;
+		}
+	}
+
+
+	// inner diagonal cross (low to high) --------------------------------------------------------------
+	if( (get(0,0,0)!=EMPTY) && (get(0,0,0)==get(1,1,1)) &&(get(1,1,1)==get(2,2,2)) && (get(2,2,2)==get(3,3,3)) )
+	{ 
+		set(0,0,0, WINLINE);
+		set(1,1,1, WINLINE);
+		set(2,2,2, WINLINE);
+		set(3,3,3, WINLINE);
+		return;
+	}
+	if( (get(3,3,0)!=EMPTY) && (get(3,3,0)==get(2,2,1)) && (get(2,2,1)==get(1,1,2)) && (get(1,1,2)==get(0,0,3)) )
+	{
+		set(3,3,0, WINLINE);
+		set(2,2,1, WINLINE);
+		set(1,1,2, WINLINE);
+		set(0,0,3, WINLINE);
+		return;
+	}
+	    
+	    
+	if( (get(3,0,0)!=EMPTY) && (get(3,0,0)==get(2,1,1)) && (get(2,1,1)==get(1,2,2)) && (get(1,2,2)==get(0,3,3)) )
+	{
+		set(3,0,0, WINLINE);
+		set(2,1,1, WINLINE);
+		set(1,2,2, WINLINE);
+		set(0,3,3, WINLINE);
+		return;
+	}
+	if( (get(0,3,0)!=EMPTY) && (get(0,3,0)==get(1,2,1)) && (get(1,2,1)==get(2,1,2)) && (get(2,1,2)==get(3,0,3)) )
+	{
+		set(0,3,0, WINLINE);
+		set(1,2,1, WINLINE);
+		set(2,1,2, WINLINE);
+		set(3,0,3, WINLINE);
+		return;
+	}
+	// inner diagonal cross (horizontal bars)
+	for(int z = 0; z <= 3; z++)
+	{
+	    if( (get(3,3,z)!=EMPTY) && (get(3,3,z)==get(2,2,z)) && (get(2,2,z)==get(1,1,z)) && (get(1,1,z)==get(0,0,z)) )
+	    {
+	    	set(3,3,z, WINLINE);	
+	    	set(2,2,z, WINLINE);	
+	    	set(1,1,z, WINLINE);	
+	    	set(0,0,z, WINLINE);	
+	       return;
+	    }    
+	}    
+
+	for(int z = 0; z <= 3; z++)
+	{
+	    if( (get(0,3,z)!=EMPTY) && (get(0,3,z)==get(1,2,z)) && (get(1,2,z)==get(2,1,z)) && (get(2,1,z)==get(3,0,z)) )
+	    {
+		    set(0,3,z, WINLINE);
+		    set(1,2,z, WINLINE);
+		    set(2,1,z, WINLINE);
+		    set(3,0,z, WINLINE);
+	       return;
+	    }    
+	}
+
+	return;
+
+
+}
+
 // Gibt den Wert an der Stelle (x, y, z) zurück. Durch die Bitschiebereien
 // ist diese Methode möglicherweise nicht sehr effizient.
 int Playground::get (uint8_t x, uint8_t y, uint8_t z)

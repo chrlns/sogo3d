@@ -79,13 +79,19 @@ glEnable(GL_TEXTURE_2D);
 	glPushMatrix();
 	glTranslatef (xp, yp, z * ballSize * 2 + 1.2 + ballSize);
 	
-	glBegin(GL_TRIANGLES);
-		glColor3f(color, 1, color);		// warum hat glColor3f an dieser Stelle keine Wirkung, wenn man es nicht in einem glBegin glEnd Block aufruft ???
-	glEnd();
 glMatrixMode(GL_TEXTURE); 
 
 //glRotatef(0, 90, 0, 1);
 glScalef(2, 1, 1);
+	
+	
+	glBegin(GL_TRIANGLES);
+		if (color == 2) {
+			glColor3f(1, 0, 0);
+		} else {
+			glColor3f(color, 1, color);		// warum hat glColor3f an dieser Stelle keine Wirkung, wenn man es nicht in einem glBegin glEnd Block aufruft ???
+		}
+	glEnd();
 
 	gluSphere(quadric,ballSize,32,32);
 	//if (color == 1) {
@@ -112,6 +118,9 @@ void drawPlayground(Playground* pg)
 						break;
 					case WHITE:
 						createBall(x, y, z, 1);
+						break;
+					case WINLINE:
+						createBall(x, y, z, 2);
 						break;
 					case EMPTY:
 						z = 4;
@@ -400,6 +409,10 @@ void mouse(int button, int state, int x, int y)
 	if (state != GLUT_DOWN) return;
 	if (markedStab == -1) return;	 
 	if (count[markedStab] == 4) return;
+	if (currentPlayground->isGameOver() != EMPTY) {
+		printf("Sorry, das Spiel ist schon zuende!!!\n");
+		return;
+	}
 	printf("Auf Stab %i sind %i Bälle\n", markedStab, count[markedStab]);
 	gameField[markedStab * 4 + count[markedStab]] = currentColor;
 	count[markedStab]++;
@@ -414,6 +427,9 @@ void mouse(int button, int state, int x, int y)
 	currentPlayground->move(x, y);
 	glutPostRedisplay();
 	minimax(currentPlayground, BLACK, horizon);
+	if (currentPlayground->isGameOver() == BLACK || currentPlayground->isGameOver() == WHITE)  {
+		currentPlayground->markWinLine();
+	}
 	printf("Bewertung aktuelles Spielfeld: %i\n", currentPlayground->rating());
 	glutPostRedisplay();
 }
