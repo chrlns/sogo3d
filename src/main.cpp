@@ -28,11 +28,17 @@ int main(int argc, char* argv[])
 			horizon = atoi(argv[++n]);
 			continue;
 		}
+		if(arg == "-b" || arg == "--play-black")
+		{
+			
+			continue;
+		}
 		if(arg == "-h" || arg == "--help")
 		{
 			std::cout << "Parameter" << std::endl;
-			std::cout << "-z|--no-zbuffer\tDisables depth buffering" << std::endl;
+			std::cout << "-b|--play-black\tPlayer plays black" << std::endl;
 			std::cout << "-r|--horizon <num>\tNumber of recursions (horizon)" << std::endl;
+			std::cout << "-z|--no-zbuffer\tDisables depth buffering" << std::endl;
 		}
 	}
 	
