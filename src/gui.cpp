@@ -18,6 +18,8 @@ float cameraHeigth = 1.8f;
 float camDegree = 0;
 float camDistance = 1.8f;
 int currentViewMode = 0;
+int lastBall[3] = {-1, -1, -1};
+
 GLfloat LightAmbient[]= { 1, 1, 1, 1.0f }; 
 GLfloat LightDiffuse[]= { 1.0f, 1.0f, 1.0f, 1.0f };	
 GLfloat LightPosition[]= { 0.0f, 0.0f, 2.0f, 1.0f };
@@ -69,7 +71,8 @@ void reshape(int w, int h)
 
 void createBall(int x, int y, int z, int color)
 {
-glEnable(GL_TEXTURE_2D);
+	if (x == lastBall[0] && y == lastBall[1] && z == lastBall[2]) color = 2; 
+	glEnable(GL_TEXTURE_2D);
 	//printf("CreateBall %i %i %i %i\n", x, y, z, color);
 	float ballSize = 0.3;
 	float xp = -1.5 + x;
@@ -347,7 +350,13 @@ void loadTexture()
 		0, GL_RGB, GL_UNSIGNED_BYTE, bmp.bytes);
 
 }
-
+void setLastBall(int x, int y, int z)
+{
+	std::cout << "setLastBall " << x << " " << y << " " << z << std::endl;
+	lastBall[0] = x;
+	lastBall[1] = y;
+	lastBall[2] = z;
+}
 
 void mouseMotion(int x, int y)		// grösstenteils übernommen von http://nehe.gamedev.net/data/lessons/lesson.asp?lesson=32
 {
