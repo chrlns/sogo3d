@@ -36,7 +36,10 @@ int max(Playground* root, int horizon, int alpha, int beta, int color/*, int* ox
 				{
 					int value = min(pg, horizon - 1, alpha, beta, switchColor(color));
 					if(value >= beta)
-             			return beta;
+						{
+							delete pg;
+             				return beta;
+             			}
          			if(value > alpha)
              			alpha = value;
 					//rating = MAX(rating, value);
@@ -72,7 +75,10 @@ int min(Playground* root, int horizon, int alpha, int beta, int color/*, int* ox
 				{
 					int value = max(pg, horizon - 1, alpha, beta, switchColor(color));
 					if(value <= alpha)
+					{
+						delete pg;
 						return alpha;
+					}
 				 	if(value < beta)
 						beta = value;
 						//rating = MIN(rating, value);
