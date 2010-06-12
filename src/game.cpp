@@ -10,6 +10,7 @@ pthread_t       sysThreadHandle[16];
 pthread_attr_t  sysThreadAttrib[16];
 uint64_t		children = 0;
 
+void setLastBall(int x, int y, int z);
 int min(Playground* root, int horizon, int alpha, int beta, int color/*, int* ox, int* oy*/);
 
 // alpha: untere Grenze
@@ -190,7 +191,19 @@ int minimax(Playground* root, int color, int argHorizon)
 	dbgmsg("Minimax: " << minmax);
 	dbgmsg("Idealer Zug: " << optX << " " << optY);
 	dbgmsg("Kinder: " << children);
+
+	for(int z = 0; z < 4; z++) 
+	{
+		if(root->get(optX, optY, z) == EMPTY)
+		{
+			setLastBall(optX, optY, z);
+			z = 4;
+		}
+	}
+
 	root->move(optX, optY);
+
+	
 	if(root->isGameOver() != EMPTY) 
 	{
 		dbgmsg("Spiel ist zu Ende!");		
