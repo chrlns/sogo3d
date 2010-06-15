@@ -104,7 +104,7 @@ void* enterThread(void* args)
 		threadResults[targs->number] = min(targs->playground, targs->horizon, targs->alpha, targs->beta, targs->color);
 
 	std::cout << "Thread " << targs->number << " fertig mit ergebnis " << threadResults[targs->number];
-	delete targs->playground;
+	delete[] targs->playground;
 	delete targs;
 	return NULL;
 }
@@ -219,7 +219,7 @@ int minimax(Playground* root, int color, int argHorizon)
 	}
 	else
 	{
-		dbgmsg("Am Zug ist " << root->turnColor);
+		dbgmsg("Am Zug ist " << root->getTurnColor());
 	}
 
 	return 0;

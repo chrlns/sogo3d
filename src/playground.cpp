@@ -5,8 +5,9 @@
 #include <stdio.h>
 
 #include <map>
+#include <vector>
 
-//std::map<uint64_t, std::map<uint64_t, int16_t>> ratings;
+std::map<std::vector<uint64_t>, int16_t> ratings;
 
 Playground::Playground()
 {	
@@ -18,6 +19,7 @@ Playground::Playground()
 		}
 	}
 	
+	this->isRated	= false;
 	this->turnColor = WHITE;
 	this->winnerCache = -1;
 }
@@ -331,8 +333,9 @@ int Playground::get (uint8_t x, uint8_t y, uint8_t z)
 // (was für das Spiel im Grunde auch nicht benötigt wird)
 void Playground::set (uint8_t x, uint8_t y, uint8_t z, uint8_t value)
 {
-	this->cols[x][y] |= value << (z * 2);
-	this->winnerCache = -1;
+	this->cols[x][y]	|= value << (z * 2);
+	this->winnerCache	= -1;
+	this->isRated		= false;
 }
 
 // Sucht nach drei Kugeln in einer Reihe der angegeben Farbe, bei denen
@@ -346,8 +349,15 @@ bool Playground::hasLines3(int color, int* x, int* y)
 int Playground::rating()
 {
 	// Erstmal im Cache nachgucken, ob da was drin ist
-	//ratings[][]
-	
+	/*std::vector<uint64_t> hash = std::vector<uint64_t>(4, 0);
+	hash[0] = ((uint64_t)cols[0][0] << 48) | ((uint64_t)cols[0][1] << 32) | ((uint32_t)cols[0][2] << 16) | (cols[0][3]);
+	hash[1] = ((uint64_t)cols[1][0] << 48) | ((uint64_t)cols[1][1] << 32) | ((uint32_t)cols[1][2] << 16) | (cols[1][3]);
+	hash[2] = ((uint64_t)cols[2][0] << 48) | ((uint64_t)cols[2][1] << 32) | ((uint32_t)cols[2][2] << 16) | (cols[2][3]);
+	hash[3] = ((uint64_t)cols[3][0] << 48) | ((uint64_t)cols[3][1] << 32) | ((uint32_t)cols[3][2] << 16) | (cols[3][3]);
+	if(ratings.find(hash) != ratings.end())
+	{
+		return ratings[hash];
+	}*/
 	int rating = 0;
 	int threefoldWhite = 0;
 	int threefoldBlack = 0;
@@ -784,129 +794,11 @@ int Playground::rating()
 		}
 
 	}
+	
+	// Write to cache
+	//ratings[hash] = rating;
+
 	return rating;
-	// #############################################################
-	// wenn mehrere 3er lines gefunden, prüfen ob die fehlende kugel bei bei den beiden lines die selbe ist (ob beide offenen lines sich mit der selben kugel "schliessen lassen"
-	
-	
-	/*int ratingVal=0;
-
-	// clone playground 
-
-	// on cloned playground:
-	Playground* tP = this->clone();
-	// fill als empty places with current color
-	for(int x=0;x<=3;x++)
-	{
-		for(int y=0;y<=3;y++)
-		{
-			while(tP->move(x, y));
-		}     
-	}
-
-	// now check how many winning combinations are left 
-	
-	// Vertical staves
-	for(int x=0;x<=3;x++)
-	{
-		for(int y=0;y<=3;y++)
-		{                   
-			if( (get(x, y, 0)!=EMPTY) && (get(x, y, 0)==get(x, y, 1)) && (get(x, y, 1)==get(x, y, 2)) && (get(x, y, 2)==get(x, y, 3)) )
-			{
-				ratingVal++;
-			}
-		}
-	}
-
-	// horizontal lines direction: [x]
-	for(int y=0;y<=3;y++)
-		{
-		for(int z=0;z<=3;z++)
-		{                   
-			if( (get(0, y, z)!=EMPTY) && (get(1, y, z)==get(2, y, z)) && (get(2, y, z)==get(3, y, z)) && (get(3, y, z)==get(4, y, z)) )
-			{
-				ratingVal++;
-			}
-		}
-	}
-
-	// horizontal lines direction: [y]
-	for(int x=0;x<=3;x++)
-	{
-		for(int z=0;z<=3;z++)
-		{                   
-			if( (get(x, 0, z)!=EMPTY) && (get(x, 0, z)==get(x, 1, z)) && (get(x, 1, z)==get(x, 2, z)) && (get(x, 2, z)==get(x, 3, z)) )
-			{
-				ratingVal++;
-			}
-		}
-	}
-
-	// diagonal bars (low to high)
-	// direction: [x]
-	for(int y=0;y<=3;y++)
-	{
-		if( (get(0,y,0)!=EMPTY) && (get(0,y,0)==get(1,y,1)) && (get(1,y,1)==get(2,y,2)) && (get(2,y,2)==get(3,y,3)) )
-		{ 
-			ratingVal++;
-		}
-
-		if( (get(3,y,0)!=EMPTY) && (get(3,y,0)==get(2,y,1)) && (get(2,y,1)==get(1,y,2)) && (get(1,y,2)==get(0,y,3)) )
-		{
-			ratingVal++;
-		}
-	}
-
-	// direction: [y] (low to high)
-	for(int x=0;x<=3;x++)
-	{
-		if( (get(x,0,0)!=EMPTY) && (get(x,0,0)==get(x,1,1)) && (get(x,1,1)==get(x,2,2)) && (get(x,2,2)==get(x,3,3)) )
-		{ 
-			ratingVal++;
-		}
-
-		if( (get(x,3,0)!=EMPTY) && (get(x,3,0)==get(x,2,1)) && (get(x,2,1)==get(x,1,2)) && (get(x,1,2)==get(x,0,3)) )
-		{
-			ratingVal++;
-		}
-	}
-
-	// inner diagonal cross (low to high)
-	if( (get(0,0,0)!=EMPTY) && (get(0,0,0)==get(1,1,1)) && (get(1,1,1)==get(2,2,2)) && (get(2,2,2)==get(3,3,3)) )
-	{ 
-		ratingVal++;
-	}
-	if( (get(3,3,0)!=EMPTY) && (get(3,3,0)==get(2,2,1)) && (get(2,2,1)==get(1,1,2)) && (get(1,1,2)==get(0,0,3)) )
-	{
-		ratingVal++;
-	}
-	    
-	    
-	if( (get(3,0,0)!=EMPTY) && (get(3,0,0)==get(2,1,1)) && (get(2,1,1)==get(1,2,2)) && (get(1,2,2)==get(0,3,3)) )
-	{
-		ratingVal++;
-	}
-	if( (get(0,3,0)!=EMPTY) && (get(0,3,0)==get(1,2,1)) && (get(1,2,1)==get(2,1,2)) && (get(2,1,2)==get(3,0,3)) )
-	{
-		ratingVal++;
-	}
-	// inner diagonal cross (horizontal bars)
-	for(int z=0;z<=3;z++)
-	{
-	    if( (get(3,3,z)!=EMPTY) && (get(3,3,z)==get(2,2,z)) && (get(2,2,z)==get(1,1,z)) && (get(1,1,z)==get(0,0,z)) )
-	    {
-	       ratingVal++;
-	    }    
-	}    
-
-	for(int z=0;z<=3;z++)
-	{
-	    if( (get(0,3,z)!=EMPTY) && (get(0,3,z)==get(1,2,z)) && (get(1,2,z)==get(2,1,z)) && (get(2,1,z)==get(3,0,z)) )
-	    {
-	       ratingVal++;
-	    }    
-	} 
-*/
 }
 
 void Playground::copyFrom(Playground* pg) 
