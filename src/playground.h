@@ -20,6 +20,7 @@ class Playground
 		Playground();
 
 		Playground* clone();
+		void copyFrom(Playground* pg);
 
 		// Prüft auf Siegbedingung. Gibt 0 zurück, falls kein Spieler gewonnen
 		// hat oder 1 für BLACK oder 2 für WHITE.
