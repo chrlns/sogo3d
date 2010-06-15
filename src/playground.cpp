@@ -22,6 +22,11 @@ Playground::Playground()
 	this->winnerCache = -1;
 }
 
+int Playground::getTurnColor()
+{
+	return this->turnColor;
+}
+
 // Prüft auf Siegbedingung. Gibt 0 zurück, falls kein Spieler gewonnen
 // hat oder 1 für BLACK oder 2 für WHITE.
 int Playground::isGameOver()

@@ -179,12 +179,12 @@ int minimax(Playground* root, int color, int argHorizon)
 	// Anhand der Berechnungszeit den Horizont erhöhen und reduzieren
 	std::cout << "Zugberechnung dauerte " << calcTime << " sec" << std::endl;
 	std::cout << "Gesamt-CPU-Zeit: " << overallCPUTime << " sec" << std::endl;
-	if(calcTime < 15)
+	if(calcTime < 5)
 	{
 		horizon++;
 		std::cout << "Berechnungshorizont erhöht auf " << horizon << std::endl;
 	}
-	else if(calcTime > 45 && horizon > 4)
+	else if(calcTime > 40 && horizon > 4)
 	{
 		horizon--;
 		std::cout << "Berechungshorizont reduziert auf " << horizon << std::endl;
