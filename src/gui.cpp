@@ -243,6 +243,7 @@ void displayTargets()
 
 void display(void) 
 {
+	//std::cout << ".";
 	glLoadIdentity();
 	gluLookAt(sin(camDegree) *  camDistance, cos(camDegree) * camDistance, cameraHeigth, 0, 0, 0.5f, 0, 0, 1);
 	glScalef(0.3, 0.3, 0.3);
