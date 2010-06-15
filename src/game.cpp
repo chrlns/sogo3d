@@ -9,6 +9,7 @@ int threadResults[16];
 pthread_t       sysThreadHandle[16];
 pthread_attr_t  sysThreadAttrib[16];
 uint64_t		children = 0;
+int				overallCPUTime = 0;
 
 void setLastBall(int x, int y, int z);
 int min(Playground* root, int horizon, int alpha, int beta, int color/*, int* ox, int* oy*/);
@@ -172,10 +173,12 @@ int minimax(Playground* root, int color, int argHorizon)
 		}
 	}
 
-	long calcTime = time(NULL) - starttime;
+	int calcTime = time(NULL) - starttime;
+	overallCPUTime += calcTime;
 
 	// Anhand der Berechnungszeit den Horizont erhöhen und reduzieren
 	std::cout << "Zugberechnung dauerte " << calcTime << " sec" << std::endl;
+	std::cout << "Gesamt-CPU-Zeit: " << overallCPUTime << " sec" << std::endl;
 	if(calcTime < 15)
 	{
 		horizon++;
@@ -201,8 +204,8 @@ int minimax(Playground* root, int color, int argHorizon)
 		}
 	}
 
+	// Performe AI move
 	root->move(optX, optY);
-
 	
 	if(root->isGameOver() != EMPTY) 
 	{
