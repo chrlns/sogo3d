@@ -524,7 +524,8 @@ int Playground::rating()
 	// direction: [x]
 	
 	for(int y = 0; y < 4 ; y++)
-	{		for(int x = 0, z = 0; x < 4; x++, z=x)
+	{
+		for(int x = 0, z = 0; x < 4; x++, z=x)
 		{
 			int actualColor = get(x, y, z);
 			if( actualColor == EMPTY )
@@ -611,7 +612,8 @@ int Playground::rating()
 	// direction: [x]
 	
 	for(int x = 0; x < 4 ; x++)
-	{		for(int y = 0, z = 0; y < 4; y++, z=x)
+	{
+		for(int y = 0, z = 0; y < 4; y++, z=x)
 		{
 			int actualColor = get(x, y, z);
 			if( actualColor == EMPTY )
@@ -701,7 +703,8 @@ int Playground::rating()
 	int actualColor = 0;
 	//int z=0;
 	for(int z=0; z<=3; z++)
-	{		for(int xy = 0; xy < 4; xy++)
+	{
+		for(int xy = 0; xy < 4; xy++)
 		{
 			actualColor = get(xy,xy,z);
 			if( actualColor!=EMPTY) 
@@ -779,7 +782,8 @@ int Playground::rating()
 		{
 			rating--;
 		}
-	}
+
+	}
 	return rating;
 	// #############################################################
 	// wenn mehrere 3er lines gefunden, prüfen ob die fehlende kugel bei bei den beiden lines die selbe ist (ob beide offenen lines sich mit der selben kugel "schliessen lassen"
@@ -904,6 +908,22 @@ int Playground::rating()
 	} 
 */
 }
+
+void Playground::copyFrom(Playground* pg) 
+{
+	for(int x = 0; x < 4; x++) 
+	{
+		for(int y = 0; y < 4; y++) 
+		{
+			this->cols[x][y] =  pg->cols[x][y];
+		}
+	}
+	
+	this->turnColor = pg->turnColor;
+	this->winnerCache = pg->winnerCache;
+	
+}
+
 
 Playground* Playground::clone()
 {

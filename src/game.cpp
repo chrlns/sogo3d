@@ -33,20 +33,21 @@ int max(Playground* root, int horizon, int alpha, int beta, int color/*, int* ox
 		{
 			for(int y = 0; y < 4; y++)
 			{
-				Playground* pg = root->clone();
+				Playground* pg = root + 1;	// Lustige pointerarithmetik
+				pg->copyFrom(root);
 				if(pg->move(x, y))
 				{
 					int value = min(pg, horizon - 1, alpha, beta, switchColor(color));
 					if(value >= beta)
 						{
-							delete pg;
+//							delete pg;
              				return beta;
              			}
          			if(value > alpha)
              			alpha = value;
 					//rating = MAX(rating, value);
 				}
-				delete pg;
+//				delete pg;
 			}
 		}
 		return alpha;
@@ -72,13 +73,14 @@ int min(Playground* root, int horizon, int alpha, int beta, int color/*, int* ox
 		{
 			for(int y = 0; y < 4; y++)
 			{
-				Playground* pg = root->clone();
+				Playground* pg = root + 1;	// Lustige pointerarithmetik
+				pg->copyFrom(root);
 				if(pg->move(x, y))
 				{
 					int value = max(pg, horizon - 1, alpha, beta, switchColor(color));
 					if(value <= alpha)
 					{
-						delete pg;
+//						delete pg;
 						return alpha;
 					}
 				 	if(value < beta)
@@ -86,7 +88,7 @@ int min(Playground* root, int horizon, int alpha, int beta, int color/*, int* ox
 						//rating = MIN(rating, value);
 
 				}
-				delete pg;
+//				delete pg;
 			}
 		}
 		return beta;
@@ -100,6 +102,8 @@ void* enterThread(void* args)
 		threadResults[targs->number] = max(targs->playground, targs->horizon, targs->alpha, targs->beta, targs->color);
 	else
 		threadResults[targs->number] = min(targs->playground, targs->horizon, targs->alpha, targs->beta, targs->color);
+
+	std::cout << "Thread " << targs->number << " fertig mit ergebnis " << threadResults[targs->number];
 	delete targs->playground;
 	delete targs;
 	return NULL;
@@ -127,12 +131,14 @@ int minimax(Playground* root, int color, int argHorizon)
 	{
 		for(int y = 0; y < 4; y++)
 		{
-			Playground* pg = root->clone();
+			Playground* playgrounds = new Playground[256];	// übertrieben viel, aber so wird sichergegangen, dass jeder thread auf seiner eigenen 4k Speicherseite arbeitet
+			playgrounds[0].copyFrom(root);
+			//Playground* pg = root->clone();
 			int n = x * 4 + y;
-			if(pg->move(x, y))
+			if(playgrounds[0].move(x, y))
 			{
 				thread_args_t* args = new thread_args();
-				args->playground	= pg;
+				args->playground	= playgrounds;
 				args->horizon		= argHorizon;
 				args->alpha			= -100000;
 				args->beta			= 100000;
