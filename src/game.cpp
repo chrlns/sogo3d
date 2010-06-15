@@ -2,6 +2,7 @@
 #include "game.h"
 #include <pthread.h>
 #include <assert.h>
+#include <stdio.h>
 
 extern int horizon;
 
@@ -103,8 +104,8 @@ void* enterThread(void* args)
 	else
 		threadResults[targs->number] = min(targs->playground, targs->horizon, targs->alpha, targs->beta, targs->color);
 
-	std::cout << "Thread " << targs->number << " fertig mit ergebnis " << threadResults[targs->number];
-	delete[] targs->playground;
+	std::cout << "Thread " << targs->number << " fertig mit ergebnis " << threadResults[targs->number] << std::endl;
+	delete targs->playground;
 	delete targs;
 	return NULL;
 }
@@ -127,11 +128,13 @@ int minimax(Playground* root, int color, int argHorizon)
 
 	// Wir führen den ersten Schritt manuell aus, da wir wissen wollen, in
 	// welche Richtung wir weiterlaufen sollen.
+	std::cout << "Grösse von Playground ist " << sizeof(Playground) << std::endl;
 	for(int x = 0; x < 4; x++)
 	{
 		for(int y = 0; y < 4; y++)
 		{
-			Playground* playgrounds = new Playground[256];	// übertrieben viel, aber so wird sichergegangen, dass jeder thread auf seiner eigenen 4k Speicherseite arbeitet
+			Playground* playgrounds = new Playground[16];	// übertrieben viel, aber so wird sichergegangen, dass jeder thread auf seiner eigenen 4k Speicherseite arbeitet
+			printf("%p\n", playgrounds);
 			playgrounds[0].copyFrom(root);
 			//Playground* pg = root->clone();
 			int n = x * 4 + y;
@@ -185,7 +188,7 @@ int minimax(Playground* root, int color, int argHorizon)
 	// Anhand der Berechnungszeit den Horizont erhöhen und reduzieren
 	std::cout << "Zugberechnung dauerte " << calcTime << " sec" << std::endl;
 	std::cout << "Gesamt-CPU-Zeit: " << overallCPUTime << " sec" << std::endl;
-	if(calcTime < 5)
+	/*if(calcTime < 5)
 	{
 		horizon++;
 		std::cout << "Berechnungshorizont erhöht auf " << horizon << std::endl;
@@ -194,7 +197,7 @@ int minimax(Playground* root, int color, int argHorizon)
 	{
 		horizon--;
 		std::cout << "Berechungshorizont reduziert auf " << horizon << std::endl;
-	}
+	}*/
 
 	// Ein paar Debugausgaben
 	dbgmsg("Minimax: " << minmax);

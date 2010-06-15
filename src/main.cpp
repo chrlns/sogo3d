@@ -15,11 +15,19 @@ int horizon = 4;
 
 void* playCPUagainsCPU(void* args)
 {
+	// gerade rekursionstiefe -> weiss gewinnt, ungerade -> schwarz gewinnt ?
 	while(currentPlayground->isGameOver() == EMPTY)
 	{
 		sleep(1);
 		minimax(currentPlayground, currentPlayground->getTurnColor(), horizon);
 	}
+	
+	if (currentPlayground->isGameOver() == WHITE) 
+		std::cout << "Weiss hat gewonnen" << std::endl;
+	else if (currentPlayground->isGameOver() == BLACK)
+		std::cout << "Schwarz hat gewonnen" << std::endl;
+		
+	currentPlayground->markWinLine();
 	return NULL;
 }
 
