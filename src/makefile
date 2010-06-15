@@ -1,7 +1,7 @@
 CFLAGS=-Wall --pedantic -pipe -I./include
 LDFLAGS=-lc -lglut -lGLU -lGL -lXmu -lXext -lX11 -lm -lpthread
 # We use -O2 as -O3 is NOT safe with gcc 4.x
-RELEASE=-O2 -march=native -msse4
+RELEASE=-O2 -march=native
 DEBUG=-g -DDEBUG
 SOURCE=$(wildcard *.cpp)
 OBJECTS:= $(patsubst %.cpp,%.o,$(SOURCE))

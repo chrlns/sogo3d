@@ -9,12 +9,10 @@
 class Playground
 {
 	private:
-		int8_t winnerCache;
-	
-	public:
-		uint8_t cols[4][4]; // 4x4 Säulen
-		//playground_t playground;
-		int turnColor; // WHITE begins
+		bool	isRated;
+		int8_t	winnerCache;
+		uint8_t	cols[4][4]; // 4x4 Säulen
+		int8_t	turnColor; // WHITE begins
 
 	public:
 		Playground();
