@@ -39,6 +39,7 @@ class Playground
 		int rating();
 
 		void setTurnColor(int color);
+		int getTurnColor();
 };
 
 #endif
