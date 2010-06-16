@@ -2,7 +2,7 @@ CFLAGS=-Wall -Wfloat-equal -Weffc++ -Wold-style-cast -Woverloaded-virtual -Wshad
 LDFLAGS=-lc -lglut -lGLU -lGL -lXmu -lXext -lX11 -lm -lpthread
 # -O3 is NOT safe with gcc 4.x
 # no risk no fun ;)
-RELEASE=-O2 -march=native
+RELEASE=-O3 -march=native
 DEBUG=-g -DDEBUG
 SOURCE=$(wildcard *.cpp)
 OBJECTS:= $(patsubst %.cpp,%.o,$(SOURCE))
