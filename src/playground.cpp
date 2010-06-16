@@ -823,7 +823,167 @@ int Playground::rating()
 	countWhite=0;
 	countEmpty=0;
 	
+	for (int i=0;i<4;i++) 
+	{
+			actualColor = get(i,i,i);
+			if( actualColor!=EMPTY) 
+			{
+				if(actualColor==BLACK)
+				{
+					countBlack++;
+				}
+				else
+				{
+					countWhite++;
+				}
+			}
+			else
+			{	
+				countEmpty++;
+			}
+
+	}
+	if(countBlack == 3 && countEmpty == 1)
+	{
+		rating = rating+30;
+	}
+	else if (countWhite == 3 && countEmpty == 1)
+	{
+		rating = rating-30;					
+	}
+	else if(countBlack == 2 && countEmpty == 2)
+	{	
+		rating++;
+	}	
+	else if(countWhite == 2 && countEmpty == 2)
+	{
+		rating--;
+	}
+
+
+	countBlack=0;
+	countWhite=0;
+	countEmpty=0;
 	
+	for (int i=0;i<4;i++) 
+	{
+			actualColor = get(3-i,i,i);
+			if( actualColor!=EMPTY) 
+			{
+				if(actualColor==BLACK)
+				{
+					countBlack++;
+				}
+				else
+				{
+					countWhite++;
+				}
+			}
+			else
+			{	
+				countEmpty++;
+			}
+
+	}
+	if(countBlack == 3 && countEmpty == 1)
+	{
+		rating = rating+30;
+	}
+	else if (countWhite == 3 && countEmpty == 1)
+	{
+		rating = rating-30;					
+	}
+	else if(countBlack == 2 && countEmpty == 2)
+	{	
+		rating++;
+	}	
+	else if(countWhite == 2 && countEmpty == 2)
+	{
+		rating--;
+	}
+
+	countBlack=0;
+	countWhite=0;
+	countEmpty=0;
+	
+	for (int i=0;i<4;i++) 
+	{
+			actualColor = get(i,3-i,i);
+			if( actualColor!=EMPTY) 
+			{
+				if(actualColor==BLACK)
+				{
+					countBlack++;
+				}
+				else
+				{
+					countWhite++;
+				}
+			}
+			else
+			{	
+				countEmpty++;
+			}
+
+	}
+	if(countBlack == 3 && countEmpty == 1)
+	{
+		rating = rating+30;
+	}
+	else if (countWhite == 3 && countEmpty == 1)
+	{
+		rating = rating-30;					
+	}
+	else if(countBlack == 2 && countEmpty == 2)
+	{	
+		rating++;
+	}	
+	else if(countWhite == 2 && countEmpty == 2)
+	{
+		rating--;
+	}
+
+	countBlack=0;
+	countWhite=0;
+	countEmpty=0;
+	
+	for (int i=0;i<4;i++) 
+	{
+			actualColor = get(3-i,3-i,i);
+			if( actualColor!=EMPTY) 
+			{
+				if(actualColor==BLACK)
+				{
+					countBlack++;
+				}
+				else
+				{
+					countWhite++;
+				}
+			}
+			else
+			{	
+				countEmpty++;
+			}
+
+	}
+	if(countBlack == 3 && countEmpty == 1)
+	{
+		rating = rating+30;
+	}
+	else if (countWhite == 3 && countEmpty == 1)
+	{
+		rating = rating-30;					
+	}
+	else if(countBlack == 2 && countEmpty == 2)
+	{	
+		rating++;
+	}	
+	else if(countWhite == 2 && countEmpty == 2)
+	{
+		rating--;
+	}
+
 
 
 	// Write to cache
