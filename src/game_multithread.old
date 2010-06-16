@@ -1,0 +1,313 @@
+#include "playground.h"
+#include "game.h"
+#include <pthread.h>
+#include <assert.h>
+#include <stdio.h>
+
+extern int horizon;
+
+int threadResults[16];
+pthread_t       sysThreadHandle[16];
+pthread_attr_t  sysThreadAttrib[16];
+uint64_t		children = 0;
+int				overallCPUTime = 0;
+int				threadCounter = 0;
+pthread_mutex_t	threadCounterMutex;
+
+void*	enterThread(void* args);
+void	setLastBall(int x, int y, int z);
+int		min(Playground* root, int horizon, int alpha, int beta, int color);
+
+void spawnMinimaxThreads(pthread_t* threadHandle, Playground* root, int color, int horizon, int alpha, int beta)
+{
+	for(int x = 0; x < 4; x++)
+	{
+		for(int y = 0; y < 4; y++)
+		{
+			Playground* playgrounds = new Playground[16];
+			playgrounds[0].copyFrom(root);
+			int n = x * 4 + y;
+			if(playgrounds[0].move(x, y))
+			{
+				thread_args_t* args = new thread_args();
+				args->playground	= playgrounds;
+				args->horizon		= horizon;
+				args->alpha			= alpha;
+				args->beta			= beta;
+				args->color			= switchColor(color);
+				args->number		= n;
+
+				// Run thread
+				assert(pthread_create(&(threadHandle[n]), NULL, enterThread, args) == 0);
+			}
+			else
+			{
+				threadHandle[n] = 0;
+				delete[] playgrounds;
+			}
+			// delete pg; // Hier nicht möglich, da pg noch innerhalb des Threads
+			// verwendet wird. Thread löscht Instanz selbst.
+		}
+	}
+}
+
+int joinMinimaxThreads(pthread_t* threadHandle, int color)
+{
+	int minmax = color == BLACK ? -(100000) : (100000); // Mit den jeweiligen Worstcase-Werten initialisieren
+
+	for(int x = 0; x < 4; x++)
+	{
+		for(int y = 0; y < 4; y++)
+		{
+			int n = x * 4 + y;
+			if(threadHandle[n] != 0)
+			{
+				dbgmsg("Waiting for Thread #" << n);
+			
+				pthread_join(threadHandle[n], NULL);
+				int v = threadResults[n];
+				dbgmsg("Zug " << x << " " << y << " ergebnis " << v);
+				if((v > minmax && color == BLACK) || (v < minmax && color == WHITE))
+				{
+					minmax = v;
+				}
+			}
+		}
+	}
+	return minmax;
+}
+
+// alpha: untere Grenze
+// beta: obere Grenze
+int max(Playground* root, int horizon, int alpha, int beta, int color)
+{
+#ifdef DEBUG
+	children++;
+#endif
+	if(horizon <= 0 || root->isGameOver() != 0) 
+	{
+		return root->rating();
+	} 
+	else 
+	{
+		//int rating = root->rating();
+		// Für jeden möglichen Zug muss ein Unterbaum erzeugt werden
+		for(int x = 0; x < 4; x++)
+		{
+			for(int y = 0; y < 4; y++)
+			{
+				Playground* pg = root + 1;	// Lustige pointerarithmetik
+				pg->copyFrom(root);
+				if(pg->move(x, y))
+				{
+					int value = min(pg, horizon - 1, alpha, beta, switchColor(color));
+					if(value >= beta)
+					{
+             			return beta;
+					}
+         			if(value > alpha)
+         			{
+             			alpha = value;
+					}
+				}
+			}
+		}
+		return alpha;
+	}
+}
+
+// alpha: untere Grenze
+// beta: obere Grenze
+int min(Playground* root, int horizon, int alpha, int beta, int color)
+{
+#ifdef DEBUG
+	children++;
+#endif
+	if(horizon <= 0 || root->isGameOver() != 0) 
+	{
+		return root->rating();
+	} 
+	else 
+	{
+		//int rating = root->rating();
+		// Für jeden möglichen Zug muss ein Unterbaum erzeugt werden
+		for(int x = 0; x < 4; x++)
+		{
+			for(int y = 0; y < 4; y++)
+			{
+				Playground* pg = root + 1;	// Lustige pointerarithmetik
+				pg->copyFrom(root);
+				if(pg->move(x, y))
+				{
+					int value = max(pg, horizon - 1, alpha, beta, switchColor(color));
+					if(value <= alpha)
+					{
+//						delete pg;
+						return alpha;
+					}
+				 	if(value < beta)
+						beta = value;
+						//rating = MIN(rating, value);
+
+				}
+//				delete pg;
+			}
+		}
+		return beta;
+	}
+}
+
+void* enterThread(void* args)
+{
+	pthread_mutex_lock(&threadCounterMutex);
+	threadCounter++;
+	pthread_mutex_unlock(&threadCounterMutex);
+	
+	thread_args* targs = (thread_args*)args;
+	if(targs->color == BLACK)
+		threadResults[targs->number] = max(targs->playground, targs->horizon, targs->alpha, targs->beta, targs->color);
+	else
+		threadResults[targs->number] = min(targs->playground, targs->horizon, targs->alpha, targs->beta, targs->color);
+
+	//dbgmsg("Thread " << targs->number << " fertig mit ergebnis " << threadResults[targs->number]);
+	delete[] targs->playground;
+	delete targs;
+	
+	pthread_mutex_lock(&threadCounterMutex);
+	threadCounter--;
+	pthread_mutex_unlock(&threadCounterMutex);
+	
+	return NULL;
+}
+
+/*
+ * Führt den Minimax-Algorithmus aus.
+ * root: aktuelles Spielfeld
+ * color: die Farbe, die am Zug ist
+ * horizon: wieviel Ebenen sollen im Baum untersucht werden.
+ */
+int minimax(Playground* root, int color, int argHorizon)
+{
+#ifdef DEBUG
+	children = 0;
+#endif
+	int optX 	= -1;
+	int optY 	= -1;
+	int minmax	= color == BLACK ? -(100000) : (100000); // Mit den jeweiligen Worstcase-Werten initialisieren
+	long starttime = time(NULL);
+	
+	pthread_mutex_init(&threadCounterMutex, NULL);
+	threadCounter = 0;
+
+	// Wir führen den ersten Schritt manuell aus, da wir wissen wollen, in
+	// welche Richtung wir weiterlaufen sollen.
+	std::cout << "Grösse von Playground ist " << sizeof(Playground) << std::endl;
+	Playground* playgrounds = new Playground[16];
+	pthread_t threadHandle[16][16];
+	for(int x = 0; x < 4; x++)
+	{
+		for(int y = 0; y < 4; y++)
+		{
+			int n = x * 4 + y;
+			playgrounds[n].copyFrom(root);
+			if(playgrounds[n].move(x, y))
+			{
+				while(threadCounter > 8)
+					pthread_yield();
+			/*	thread_args_t* args = new thread_args();
+				args->playground	= playgrounds;
+				args->horizon		= argHorizon;
+				args->alpha			= -100000;
+				args->beta			= 100000;
+				args->color			= switchColor(color);
+				args->number		= n;
+
+				// Run thread
+				assert(pthread_create(&(sysThreadHandle[n]), NULL, enterThread, args) == 0);*/
+				spawnMinimaxThreads(threadHandle[n], playgrounds + n, switchColor(color), argHorizon, -100000, 100000);
+				sysThreadHandle[n] = 1;
+			}
+			else
+			{
+				sysThreadHandle[n] = 0;
+				
+			}
+			// delete pg; // Hier nicht möglich, da pg noch innerhalb des Threads
+			// verwendet wird. Thread löscht Instanz selbst.
+		}
+	}
+
+	for(int x = 0; x < 4; x++)
+	{
+		for(int y = 0; y < 4; y++)
+		{
+			int n = x * 4 + y;
+			if(sysThreadHandle[n] != 0)
+			{
+				dbgmsg("Waiting for Thread #" << n);
+			
+				/*pthread_join(sysThreadHandle[n], NULL);
+				int v = threadResults[n];*/
+				
+				int v = joinMinimaxThreads(threadHandle[n], switchColor(color));
+				
+				dbgmsg("Zug " << x << " " << y << " ergebnis " << v);
+				if((v > minmax && color == BLACK) || (v < minmax && color == WHITE))
+				{
+					optX = x;
+					optY = y;
+					minmax = v;
+				}
+			}
+		}
+	}
+	
+	delete[] playgrounds;
+
+	int calcTime = time(NULL) - starttime;
+	overallCPUTime += calcTime;
+
+	// Anhand der Berechnungszeit den Horizont erhöhen und reduzieren
+	std::cout << "Zugberechnung dauerte " << calcTime << " sec" << std::endl;
+	std::cout << "Gesamt-CPU-Zeit: " << overallCPUTime << " sec" << std::endl;
+	/*if(calcTime < 5)
+	{
+		horizon++;
+		std::cout << "Berechnungshorizont erhöht auf " << horizon << std::endl;
+	}
+	else if(calcTime > 40 && horizon > 4)
+	{
+		horizon--;
+		std::cout << "Berechungshorizont reduziert auf " << horizon << std::endl;
+	}*/
+
+	// Ein paar Debugausgaben
+	dbgmsg("Minimax: " << minmax);
+	dbgmsg("Idealer Zug: " << optX << " " << optY);
+	dbgmsg("Kinder: " << children);
+
+	for(int z = 0; z < 4; z++) 
+	{
+		if(root->get(optX, optY, z) == EMPTY)
+		{
+			setLastBall(optX, optY, z);
+			z = 4;
+		}
+	}
+
+	// Performe AI move
+	root->move(optX, optY);
+	
+	if(root->isGameOver() != EMPTY) 
+	{
+		dbgmsg("Spiel ist zu Ende!");		
+	}
+	else
+	{
+		dbgmsg("Am Zug ist " << root->getTurnColor());
+	}
+	
+	pthread_mutex_destroy(&threadCounterMutex);
+
+	return 0;
+}
