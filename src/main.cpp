@@ -13,6 +13,9 @@ Playground* currentPlayground = NULL;
 bool enableZBuffer = true;
 int horizon = 4;
 
+extern bool dynamicHorizon;
+extern int t0, t1;
+
 void* playCPUagainsCPU(void* args)
 {
 	// gerade rekursionstiefe -> weiss gewinnt, ungerade -> schwarz gewinnt ?
@@ -55,6 +58,11 @@ int main(int argc, char* argv[])
 			horizon = atoi(argv[++n]);
 			continue;
 		}
+		if(arg == "-rd")
+		{
+			dynamicHorizon = true;
+			continue;
+		}
 		if(arg == "-b" || arg == "--play-black")
 		{
 			currentPlayground->setTurnColor(BLACK);
@@ -64,6 +72,16 @@ int main(int argc, char* argv[])
 		if(arg == "-c" || arg == "--cpu-only")
 		{
 			cpuOnly = true;
+			continue;
+		}
+		if(arg == "-t0")
+		{
+			t0 = atoi(argv[++n]);
+			continue;
+		}
+		if(arg == "-t1")
+		{
+			t1 = atoi(argv[++n]);
 			continue;
 		}
 		if(arg == "-h" || arg == "--help")

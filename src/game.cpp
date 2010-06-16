@@ -11,6 +11,9 @@ pthread_t       sysThreadHandle[16];
 pthread_attr_t  sysThreadAttrib[16];
 uint64_t		children = 0;
 int				overallCPUTime = 0;
+int				t0 = 5;
+int				t1 = 40;
+bool			dynamicHorizon = false;
 
 void setLastBall(int x, int y, int z);
 int min(Playground* root, int horizon, int alpha, int beta, int color/*, int* ox, int* oy*/);
@@ -188,16 +191,19 @@ int minimax(Playground* root, int color, int argHorizon)
 	// Anhand der Berechnungszeit den Horizont erhöhen und reduzieren
 	std::cout << "Zugberechnung dauerte " << calcTime << " sec" << std::endl;
 	std::cout << "Gesamt-CPU-Zeit: " << overallCPUTime << " sec" << std::endl;
-	/*if(calcTime < 5)
+	if(dynamicHorizon)
 	{
-		horizon++;
-		std::cout << "Berechnungshorizont erhöht auf " << horizon << std::endl;
+		if(calcTime < t0)
+		{
+			horizon++;
+			std::cout << "Berechnungshorizont erhöht auf " << horizon << std::endl;
+		}
+		else if(calcTime > t1 && horizon > 4)
+		{
+			horizon--;
+			std::cout << "Berechungshorizont reduziert auf " << horizon << std::endl;
+		}
 	}
-	else if(calcTime > 40 && horizon > 4)
-	{
-		horizon--;
-		std::cout << "Berechungshorizont reduziert auf " << horizon << std::endl;
-	}*/
 
 	// Ein paar Debugausgaben
 	dbgmsg("Minimax: " << minmax);
