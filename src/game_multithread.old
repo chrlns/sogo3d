@@ -62,11 +62,8 @@ int joinMinimaxThreads(pthread_t* threadHandle, int color)
 			int n = x * 4 + y;
 			if(threadHandle[n] != 0)
 			{
-				dbgmsg("Waiting for Thread #" << n);
-			
 				pthread_join(threadHandle[n], NULL);
 				int v = threadResults[n];
-				dbgmsg("Zug " << x << " " << y << " ergebnis " << v);
 				if((v > minmax && color == BLACK) || (v < minmax && color == WHITE))
 				{
 					minmax = v;
