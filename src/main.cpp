@@ -37,6 +37,9 @@ void* playCPUagainsCPU(void* args)
 
 int main(int argc, char* argv[])
 {
+#ifdef SCHROTTI
+	std::cout << "Schrotti's version" << std::endl;
+#endif
 	bool cpuOnly = false;
 
  	// Start GUI

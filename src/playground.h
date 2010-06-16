@@ -11,7 +11,11 @@ class Playground
 	private:
 		bool	isRated;
 		int8_t	winnerCache;
+#ifdef SCHROTTI
+		uint8_t cols[4][4][4];
+#else
 		uint8_t	cols[4][4]; // 4x4 Säulen
+#endif
 		int8_t	turnColor; // WHITE begins
 
 	public:
@@ -30,8 +34,12 @@ class Playground
 		// ist diese Methode möglicherweise nicht sehr effizient.
 		inline int get (uint8_t x, uint8_t y, uint8_t z)
 		{
+#ifdef SCHROTTI
+			return this->cols[x][y][z];
+#else
 			uint8_t v = this->cols[x][y];
 			return (v & (3 << z * 2)) >> (z * 2);
+#endif
 		}
 
 		void set (uint8_t x, uint8_t y, uint8_t z, uint8_t);
