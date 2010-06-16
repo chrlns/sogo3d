@@ -26,7 +26,14 @@ class Playground
 		
 		void markWinLine();
 
-		int get (uint8_t x, uint8_t y, uint8_t z);
+		// Gibt den Wert an der Stelle (x, y, z) zurück. Durch die Bitschiebereien
+		// ist diese Methode möglicherweise nicht sehr effizient.
+		inline int get (uint8_t x, uint8_t y, uint8_t z)
+		{
+			uint8_t v = this->cols[x][y];
+			return (v & (3 << z * 2)) >> (z * 2);
+		}
+
 		void set (uint8_t x, uint8_t y, uint8_t z, uint8_t);
 
 		// Setze Kugel an die angegebene Position und gibt true zurück,
