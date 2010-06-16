@@ -136,8 +136,8 @@ int minimax(Playground* root, int color, int argHorizon)
 	{
 		for(int y = 0; y < 4; y++)
 		{
-			Playground* playgrounds = new Playground[16];	// übertrieben viel, aber so wird sichergegangen, dass jeder thread auf seiner eigenen 4k Speicherseite arbeitet
-			printf("%p\n", playgrounds);
+			Playground* playgrounds = new Playground[32]; // Sollte in 4K passen
+			//printf("%p\n", playgrounds);
 			playgrounds[0].copyFrom(root);
 			//Playground* pg = root->clone();
 			int n = x * 4 + y;
@@ -193,7 +193,7 @@ int minimax(Playground* root, int color, int argHorizon)
 	std::cout << "Gesamt-CPU-Zeit: " << overallCPUTime << " sec" << std::endl;
 	if(dynamicHorizon)
 	{
-		if(calcTime < t0)
+		if(calcTime < t0 && horizon < 30)
 		{
 			horizon++;
 			std::cout << "Berechnungshorizont erhöht auf " << horizon << std::endl;

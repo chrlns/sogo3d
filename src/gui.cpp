@@ -384,7 +384,7 @@ void mouseMotion(int x, int y)		// grösstenteils übernommen von http://nehe.ga
 	glLoadIdentity();											// Resets The Matrix
 
 	// This Creates A Matrix That Will Zoom Up To A Small Portion Of The Screen, Where The Mouse Is.
-	gluPickMatrix((GLdouble) x, (GLdouble) (viewport[3]-y), 1.0f, 1.0f, viewport);
+	gluPickMatrix(static_cast<GLdouble>(x), static_cast<GLdouble>((viewport[3] - y)), 1.0f, 1.0f, viewport);
 
 	// Apply The Perspective Matrix
 	gluPerspective(60.0f, (GLfloat) (viewport[2]-viewport[0])/(GLfloat) (viewport[3]-viewport[1]), 0.01f, 1000.0f);

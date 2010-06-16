@@ -10,7 +10,14 @@ Playground::Playground()
 	{
 		for(int y = 0; y < 4; y++) 
 		{
+#ifdef SCHROTTI
+			for(int z = 0; z < 4; z++)
+			{
+				this->cols[x][y][z] = 0;
+			}
+#else
 			this->cols[x][y] = 0;
+#endif
 		}
 	}
 	
@@ -320,7 +327,11 @@ void Playground::markWinLine()
 // (was für das Spiel im Grunde auch nicht benötigt wird)
 void Playground::set (uint8_t x, uint8_t y, uint8_t z, uint8_t value)
 {
+#ifdef SCHROTTI
+	this->cols[x][y][z] = value;
+#else
 	this->cols[x][y]	|= value << (z * 2);
+#endif
 	this->winnerCache	= -1;
 	this->isRated		= false;
 }
