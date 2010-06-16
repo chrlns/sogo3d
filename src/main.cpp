@@ -12,6 +12,7 @@
 Playground* currentPlayground = NULL;
 bool enableZBuffer = true;
 int horizon = 4;
+bool noCPU = false;
 
 extern bool dynamicHorizon;
 extern int t0, t1;
@@ -72,6 +73,11 @@ int main(int argc, char* argv[])
 		if(arg == "-c" || arg == "--cpu-only")
 		{
 			cpuOnly = true;
+			continue;
+		}
+		if(arg == "-nc")
+		{
+			noCPU = true;
 			continue;
 		}
 		if(arg == "-t0")
