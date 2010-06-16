@@ -4,11 +4,6 @@
 #include <cstring>
 #include <stdio.h>
 
-#include <map>
-#include <vector>
-
-std::map<std::vector<uint64_t>, int16_t> ratings;
-
 Playground::Playground()
 {	
 	for(int x = 0; x < 4; x++) 
@@ -321,14 +316,6 @@ void Playground::markWinLine()
 	return;
 }
 
-// Gibt den Wert an der Stelle (x, y, z) zurück. Durch die Bitschiebereien
-// ist diese Methode möglicherweise nicht sehr effizient.
-int Playground::get (uint8_t x, uint8_t y, uint8_t z)
-{
-	uint8_t v = this->cols[x][y];
-	return (v & (3 << z * 2)) >> (z * 2);
-}
-
 // Diese Methode kann nur Bits setzen, jedoch nicht löschen
 // (was für das Spiel im Grunde auch nicht benötigt wird)
 void Playground::set (uint8_t x, uint8_t y, uint8_t z, uint8_t value)
@@ -348,16 +335,6 @@ bool Playground::hasLines3(int color, int* x, int* y)
 // Bewertung des aktuellen Spielfeldes aus der Sicht von Schwarz
 int Playground::rating()
 {
-	// Erstmal im Cache nachgucken, ob da was drin ist
-	/*std::vector<uint64_t> hash = std::vector<uint64_t>(4, 0);
-	hash[0] = ((uint64_t)cols[0][0] << 48) | ((uint64_t)cols[0][1] << 32) | ((uint32_t)cols[0][2] << 16) | (cols[0][3]);
-	hash[1] = ((uint64_t)cols[1][0] << 48) | ((uint64_t)cols[1][1] << 32) | ((uint32_t)cols[1][2] << 16) | (cols[1][3]);
-	hash[2] = ((uint64_t)cols[2][0] << 48) | ((uint64_t)cols[2][1] << 32) | ((uint32_t)cols[2][2] << 16) | (cols[2][3]);
-	hash[3] = ((uint64_t)cols[3][0] << 48) | ((uint64_t)cols[3][1] << 32) | ((uint32_t)cols[3][2] << 16) | (cols[3][3]);
-	if(ratings.find(hash) != ratings.end())
-	{
-		return ratings[hash];
-	}*/
 	int rating = 0;
 	int threefoldWhite = 0;
 	int threefoldBlack = 0;
@@ -822,7 +799,7 @@ int Playground::rating()
 	countBlack=0;
 	countWhite=0;
 	countEmpty=0;
-	
+
 	for (int i=0;i<4;i++) 
 	{
 			actualColor = get(i,i,i);
@@ -983,12 +960,6 @@ int Playground::rating()
 	{
 		rating--;
 	}
-
-
-
-	// Write to cache
-	//ratings[hash] = rating;
-
 	return rating;
 }
 
