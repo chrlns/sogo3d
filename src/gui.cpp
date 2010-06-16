@@ -10,6 +10,7 @@
 
 extern Playground* currentPlayground;
 extern bool enableZBuffer;
+extern bool noCPU;
 extern int horizon;
 
 int windowWidth;
@@ -444,7 +445,10 @@ void mouse(int button, int state, int x, int y)
 	dbgmsg("Klick " << markedStab << " " << x << " " << y);
 	currentPlayground->move(x, y);
 	glutPostRedisplay();
-	minimax(currentPlayground, BLACK, horizon);
+	if(!noCPU)
+	{
+		minimax(currentPlayground, BLACK, horizon);
+	}
 	if(currentPlayground->isGameOver() != EMPTY)
 	{
 		currentPlayground->markWinLine();
