@@ -1,8 +1,0 @@
-Büro-Rechner (2 Cores)
--rd -t0 5 -t1 40       720sek (? gewonnen)		// -O2
--rd -t0 5 -t1 60       988sek (weiß gewonnen)	// -O2
-
-Prakraum
--rd -t0 5 -t1 40		823sek (schwarz)		// -O2
--rd -t0 5 -t1 60		719sek	(weiß)			// -O2
--rd -t0 5 -t1 50		884sek (weiß)			// -O3

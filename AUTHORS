@@ -1,0 +1,16 @@
+AUTHORS & CREDITS
+=================
+
+As most software applications SOGO is based on the work
+of individuals or projects. These fine people contributing to 
+the Free Software community are mentioned here:
+
+SOGO
+Copyright (C) 2010 by 
+    Julian Sundermann <julian.sundermann@fh-osnabrueck.de>
+    Christian Lins <christian.lins@fh-osnabrueck.de>
+    Julius Hoyer <julius.hoyer@fh-osnabrueck.de>
+
+SOGO uses the BMPLoader class by Chris Backhouse:
+    Copyright (C) 2006  Chris Backhouse
+
