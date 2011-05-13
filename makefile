@@ -4,7 +4,7 @@ LDFLAGS=-lc -lglut -lGLU -lGL -lXmu -lXext -lX11 -lm -lpthread
 # no risk no fun ;)
 RELEASE=-O3 -march=native
 DEBUG=-g -DDEBUG
-SOURCE=$(wildcard *.cpp)
+SOURCE=$(wildcard src/*.cpp)
 OBJECTS:= $(patsubst %.cpp,%.o,$(SOURCE))
 
 all : $(OBJECTS)
