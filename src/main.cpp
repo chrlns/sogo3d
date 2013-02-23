@@ -26,6 +26,7 @@
 #include <string>
 #include <stdio.h>
 #include <stdlib.h>
+#include <unistd.h>
 
 Playground* currentPlayground = NULL;
 bool enableZBuffer = true;

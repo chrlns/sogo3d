@@ -23,7 +23,7 @@ asm : override CFLAGS+=-S
 asm : clean all;
 
 clean :
-	rm -f sogo $(OBJECTS)
+	rm -f src/sogo $(OBJECTS)
 
 %.o : %.cpp
 	g++ -c $(CFLAGS) $< -o $@
